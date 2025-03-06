@@ -19,7 +19,8 @@ Features:
 Whether you’re studying nuclear organization or just love bagels, BagelFit brings toroidal fitting to the next level! 🥯✨
 
 
-## Documentation https://neeleshsoni21.github.io/BagelFit/
+## Documentation 
+https://neeleshsoni21.github.io/BagelFit/
 
 ## Example Usages
 

@@ -7,9 +7,13 @@ BagelFit is a computational tool designed to fit toroidal structures onto nuclea
 Features:
 
 ✅ Torus fitting with binary & non-binary density maps
+
 ✅ Cross-correlation-based optimization
+
 ✅ Dice coefficient calculation for overlap analysis
+
 ✅ Visualization of voxel intensity distributions
+
 ✅ Support for nuclear membrane structural studies
 
 Whether you’re studying nuclear organization or just love bagels, BagelFit brings toroidal fitting to the next level! 🥯✨

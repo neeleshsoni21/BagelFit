@@ -6,4 +6,6 @@ __pycache__
 docs/.DS_Store
 *.pyc
 *.gpickle
+*.mrc
+bagelfit/*.mrc
 output/*.rmf

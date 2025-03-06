@@ -28,12 +28,12 @@ Whether you’re studying nuclear organization or just love bagels, BagelFit bri
 # Example Usages
 #-----------------------------------------------------#
 
-from BagelFitter import BagelFitter
+import bagelfit as bf
 
 #-----------------------------------------------------#
 # Write a torus map using Torus parameters
 #-----------------------------------------------------#
-fitter = BagelFitter()
+fitter = bf.BagelFitter()
 
 tor_R = 670
 tor_r = 160
@@ -51,7 +51,7 @@ best_torus = fitter.generate_binary_torus(
 #-----------------------------------------------------#
 # Score a torus map with other torus maps or experimental maps
 #-----------------------------------------------------#
-fitter = BagelFitter()
+fitter = bf.BagelFitter()
 
 mapfile1 = "./yeast_membrane/Yeast_C8_Double_MR_center.mrc"
 mapfile2 = "./yeast_membrane/torus_yeast_fitted.mrc"
@@ -61,7 +61,7 @@ fitter.score_torus_maps(mapfile1, mapfile2)
 # Fit several torus onto nuclear membrane 
 # and write the highest overlapping torus into the file
 #-----------------------------------------------------#
-fitter = BagelFitter()
+fitter = bf.BagelFitter()
 
 # Below map has 11 million voxels
 fitter.load_exprimental_map("./yeast_membrane/Yeast_C8_Double_MR_center.mrc")

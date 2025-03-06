@@ -5,3 +5,4 @@ BagelFit
    :maxdepth: 4
 
    src
+   examples

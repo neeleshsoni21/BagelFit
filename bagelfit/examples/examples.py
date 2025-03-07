@@ -15,6 +15,22 @@ def generate_binary_torus_map():
 	
 	Returns:
 		None
+
+	Examples:
+		.. code-block:: python
+
+			data_path = os.path.join(script_dir,"./yeast_membrane/")
+
+			fitter= bf.BagelFitter()
+
+			tor_R = 660; tor_r=140; tor_th=55; extension=0.0
+
+			best_torus = fitter.generate_binary_torus(
+				tor_R, tor_r, tor_th, 
+				extension=0.0, 
+				boundingbox_length=2240, 
+				voxel_size=10.0, 
+				outmap_fname=os.path.join(data_path,"torus_yeast_fitted.mrc" ))
 	"""
 	import bagelfit as bf
 
@@ -41,6 +57,18 @@ def score_torus_map_with_experimental_map():
 	
 	Returns:
 		None
+
+	Examples:
+		.. code-block:: python
+
+			fitter= bf.BagelFitter()
+
+			mapfile1 = os.path.join(data_path,"Yeast_C8_Double_MR_center.mrc" )
+			
+			mapfile2 = os.path.join(data_path,"torus_yeast_fitted.mrc" )
+			
+			fitter.score_torus_maps(mapfile1, mapfile2)
+
 	"""
 	#-----------------------------------------------------#
 	# Score a torus map with other torus maps or experimental maps
@@ -60,6 +88,22 @@ def generate_bestfit_torus_map():
 	
 	Returns:
 		None
+
+	Examples:
+		.. code-block:: python
+
+			fitter= bf.BagelFitter()
+			
+			fitter.load_exprimental_map(os.path.join(data_path,"Yeast_C8_Double_MR_center.mrc" ))
+			
+			tor_R_range=(660, 670, 10); 
+			tor_r_range=(140, 160, 20); 
+			tor_th_range=(55, 65, 10); 
+			extension = 0.0
+			
+			best_torus = fitter.fit_binary_torus(tor_R_range, tor_r_range, tor_th_range, extension)
+			
+			fitter.write_torusmap_to_file(os.path.join(data_path,"torus_yeast_fitted.mrc" ))
 	"""
 	#-----------------------------------------------------#
 	# EXAMPLE Fit several torus onto nuclear membrane 

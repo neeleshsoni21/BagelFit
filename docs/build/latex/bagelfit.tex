@@ -93,14 +93,11 @@
 \sphinxstepscope
 
 
-\section{BagelFit}
-\label{\detokenize{src:bagelfit}}\label{\detokenize{src::doc}}
+\section{BagelFitter}
+\label{\detokenize{src:bagelfitter}}\label{\detokenize{src::doc}}
 
-\subsection{Submodules}
-\label{\detokenize{src:submodules}}
-
-\subsection{src.BagelFitter module}
-\label{\detokenize{src:module-src.BagelFitter}}\label{\detokenize{src:src-bagelfitter-module}}\index{module@\spxentry{module}!src.BagelFitter@\spxentry{src.BagelFitter}}\index{src.BagelFitter@\spxentry{src.BagelFitter}!module@\spxentry{module}}\index{BagelFitter (class in src.BagelFitter)@\spxentry{BagelFitter}\spxextra{class in src.BagelFitter}}
+\subsection{BagelFitter Class}
+\label{\detokenize{src:module-src.BagelFitter}}\label{\detokenize{src:bagelfitter-class}}\index{module@\spxentry{module}!src.BagelFitter@\spxentry{src.BagelFitter}}\index{src.BagelFitter@\spxentry{src.BagelFitter}!module@\spxentry{module}}\index{BagelFitter (class in src.BagelFitter)@\spxentry{BagelFitter}\spxextra{class in src.BagelFitter}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter}}
@@ -225,7 +222,7 @@ int
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.calculate_dice_coefficient}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{calculate\_dice\_coefficient}}}{\sphinxparam{\DUrole{n}{dmap1}}\sphinxparamcomma \sphinxparam{\DUrole{n}{dmap2}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{calculate\_dice\_coefficient}}}{\sphinxparam{\DUrole{n}{dmap1}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{DensityMap}}\sphinxparamcomma \sphinxparam{\DUrole{n}{dmap2}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{DensityMap}}}{{ $\rightarrow$ float}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Computes the Dice Coefficient (F1 Score) for binary overlap between two density maps.
@@ -258,7 +255,7 @@ float
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.create_blank_density_map}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{create\_blank\_density\_map}}}{\sphinxparam{\DUrole{n}{n\_voxels}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{create\_blank\_density\_map}}}{\sphinxparam{\DUrole{n}{n\_voxels}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{int}}}{{ $\rightarrow$ DensityMap}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Creates an empty density map centered at (0,0,0).
@@ -284,7 +281,7 @@ IMP.em.DensityMap
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.fill_binary_density}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fill\_binary\_density}}}{\sphinxparam{\DUrole{n}{torus}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fill\_binary\_density}}}{\sphinxparam{\DUrole{n}{torus}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{{\hyperref[\detokenize{src:src.Torus.Torus}]{\sphinxcrossref{Torus}}}}}}{{ $\rightarrow$ None}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Generates a binary density map based on the torus parameters.
@@ -302,7 +299,7 @@ Generates a binary density map based on the torus parameters.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.fill_nonbinary_density}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fill\_nonbinary\_density}}}{\sphinxparam{\DUrole{n}{torus}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fill\_nonbinary\_density}}}{\sphinxparam{\DUrole{n}{torus}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{{\hyperref[\detokenize{src:src.Torus.Torus}]{\sphinxcrossref{Torus}}}}}}{{ $\rightarrow$ None}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Generates a non\sphinxhyphen{}binary density (extracted from the input map) map based on the torus parameters.
@@ -320,7 +317,7 @@ Generates a non\sphinxhyphen{}binary density (extracted from the input map) map 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.fit_binary_torus}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fit\_binary\_torus}}}{\sphinxparam{\DUrole{n}{tor\_R\_range}\DUrole{o}{=}\DUrole{default_value}{(670, 680, 10)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_r\_range}\DUrole{o}{=}\DUrole{default_value}{(160, 180, 20)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_th\_range}\DUrole{o}{=}\DUrole{default_value}{(85.0, 95, 10)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{extension}\DUrole{o}{=}\DUrole{default_value}{0.0}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fit\_binary\_torus}}}{\sphinxparam{\DUrole{n}{tor\_R\_range}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{tuple}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{(670, 680, 10)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_r\_range}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{tuple}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{(160, 180, 20)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_th\_range}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{tuple}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{(85.0, 95, 10)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{extension}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{0.0}}}{{ $\rightarrow$ {\hyperref[\detokenize{src:src.Torus.Torus}]{\sphinxcrossref{Torus}}}}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Fits a binary torus to the density map by searching for optimal parameters.
@@ -361,7 +358,7 @@ Best\sphinxhyphen{}fitting torus object based on maximum cross\sphinxhyphen{}cor
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.fit_nonbinary_torus}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fit\_nonbinary\_torus}}}{\sphinxparam{\DUrole{n}{tor\_R\_range}\DUrole{o}{=}\DUrole{default_value}{(670, 680, 10)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_r\_range}\DUrole{o}{=}\DUrole{default_value}{(160, 180, 20)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_th\_range}\DUrole{o}{=}\DUrole{default_value}{(85.0, 95, 10)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{extension}\DUrole{o}{=}\DUrole{default_value}{0.0}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fit\_nonbinary\_torus}}}{\sphinxparam{\DUrole{n}{tor\_R\_range}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{tuple}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{(670, 680, 10)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_r\_range}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{tuple}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{(160, 180, 20)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_th\_range}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{tuple}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{(85.0, 95, 10)}}\sphinxparamcomma \sphinxparam{\DUrole{n}{extension}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{0.0}}}{{ $\rightarrow$ {\hyperref[\detokenize{src:src.Torus.Torus}]{\sphinxcrossref{Torus}}}}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Fits a non\sphinxhyphen{}binary torus to the density map by searching for optimal parameters.
@@ -402,23 +399,23 @@ Best\sphinxhyphen{}fitting torus object based on maximum cross\sphinxhyphen{}cor
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.generate_binary_torus}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{generate\_binary\_torus}}}{\sphinxparam{\DUrole{n}{tor\_R}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_r}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_th}}\sphinxparamcomma \sphinxparam{\DUrole{n}{extension}\DUrole{o}{=}\DUrole{default_value}{0.0}}\sphinxparamcomma \sphinxparam{\DUrole{n}{boundingbox\_length}\DUrole{o}{=}\DUrole{default_value}{2240}}\sphinxparamcomma \sphinxparam{\DUrole{n}{voxel\_size}\DUrole{o}{=}\DUrole{default_value}{10}}\sphinxparamcomma \sphinxparam{\DUrole{n}{outmap\_fname}\DUrole{o}{=}\DUrole{default_value}{\textquotesingle{}torus\_yeast\_fitted.mrc\textquotesingle{}}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{generate\_binary\_torus}}}{\sphinxparam{\DUrole{n}{tor\_R}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_r}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{tor\_th}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{extension}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{0.0}}\sphinxparamcomma \sphinxparam{\DUrole{n}{boundingbox\_length}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{2240}}\sphinxparamcomma \sphinxparam{\DUrole{n}{voxel\_size}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{10}}\sphinxparamcomma \sphinxparam{\DUrole{n}{outmap\_fname}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{str}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{\textquotesingle{}torus\_yeast\_fitted.mrc\textquotesingle{}}}}{{ $\rightarrow$ {\hyperref[\detokenize{src:src.Torus.Torus}]{\sphinxcrossref{Torus}}}}}
 \pysigstopsignatures
 \sphinxAtStartPar
-Fits a binary torus to the density map by searching for optimal parameters.
+Generates and writes a binary torus density map based on input parameters.
 \begin{quote}\begin{description}
 \sphinxlineitem{Parameters}\begin{itemize}
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{tor\_R\_range}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Major radius of the torus.
+\sphinxstyleliteralstrong{\sphinxupquote{tor\_R}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Major radius of the torus.
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{tor\_r\_range}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Minor radius of the torus.
+\sphinxstyleliteralstrong{\sphinxupquote{tor\_r}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Minor radius of the torus.
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{tor\_th\_range}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Thickness of the bilipid layer.
+\sphinxstyleliteralstrong{\sphinxupquote{tor\_th}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Thickness of the bilipid layer.
 
 \item {} 
 \sphinxAtStartPar
@@ -426,19 +423,15 @@ Fits a binary torus to the density map by searching for optimal parameters.
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{tor\_th\_range}} \textendash{} Thickness of the bilipid layer.
+\sphinxstyleliteralstrong{\sphinxupquote{boundingbox\_length}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{optional}}) \textendash{} Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å.
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{boundingbox\_length}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{optional}}) \textendash{} Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å
+\sphinxstyleliteralstrong{\sphinxupquote{voxel\_size}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{optional}}) \textendash{} Individual voxel size in the output map file. Default value 10 Å.
 
 \item {} 
 \sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{voxel\_size}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{optional}}) \textendash{} Individual voxel size in the output map file. Default value 10 Å
-
-\item {} 
-\sphinxAtStartPar
-\sphinxstyleliteralstrong{\sphinxupquote{outmap\_fname}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{optional}}) \textendash{} ouput map file name of the torus. Default is torus\_yeast\_fitted.mrc in current directory
+\sphinxstyleliteralstrong{\sphinxupquote{outmap\_fname}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{optional}}) \textendash{} Output map file name of the torus. Default is “torus\_yeast\_fitted.mrc” in the current directory.
 
 \end{itemize}
 
@@ -459,8 +452,24 @@ Torus object based on input parameters.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.load_exprimental_map}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{load\_exprimental\_map}}}{\sphinxparam{\DUrole{n}{input\_map\_path}}\sphinxparamcomma \sphinxparam{\DUrole{n}{voxel\_size}\DUrole{o}{=}\DUrole{default_value}{None}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{load\_exprimental\_map}}}{\sphinxparam{\DUrole{n}{input\_map\_path}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{str}}\sphinxparamcomma \sphinxparam{\DUrole{n}{voxel\_size}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{int\DUrole{w}{ }\DUrole{p}{|}\DUrole{w}{ }None}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{None}}}{{ $\rightarrow$ None}}
 \pysigstopsignatures
+\sphinxAtStartPar
+Loads an experimental density map for processing.
+\begin{quote}\begin{description}
+\sphinxlineitem{Parameters}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{input\_map\_path}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} Path to the input density map file.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{voxel\_size}} (\sphinxstyleliteralemphasis{\sphinxupquote{int}}\sphinxstyleliteralemphasis{\sphinxupquote{, }}\sphinxstyleliteralemphasis{\sphinxupquote{optional}}) \textendash{} Size of each voxel (default is determined from the map).
+
+\end{itemize}
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{plot\_voxel\_values() (src.BagelFitter.BagelFitter method)@\spxentry{plot\_voxel\_values()}\spxextra{src.BagelFitter.BagelFitter method}}
@@ -468,7 +477,7 @@ Torus object based on input parameters.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.plot_voxel_values}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{plot\_voxel\_values}}}{}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{plot\_voxel\_values}}}{}{{ $\rightarrow$ None}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Plots the histogram of voxel intensity values in the density map.
@@ -480,8 +489,32 @@ Plots the histogram of voxel intensity values in the density map.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.score_torus_maps}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{score\_torus\_maps}}}{\sphinxparam{\DUrole{n}{map1}}\sphinxparamcomma \sphinxparam{\DUrole{n}{map2}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{score\_torus\_maps}}}{\sphinxparam{\DUrole{n}{map1}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{str}}\sphinxparamcomma \sphinxparam{\DUrole{n}{map2}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{str}}}{{ $\rightarrow$ float}}
 \pysigstopsignatures
+\sphinxAtStartPar
+Computes the cross\sphinxhyphen{}correlation coefficient between two torus maps.
+\begin{quote}\begin{description}
+\sphinxlineitem{Parameters}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{map1}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} Path to the first torus density map.
+
+\item {} 
+\sphinxAtStartPar
+\sphinxstyleliteralstrong{\sphinxupquote{map2}} (\sphinxstyleliteralemphasis{\sphinxupquote{str}}) \textendash{} Path to the second torus density map.
+
+\end{itemize}
+
+\sphinxlineitem{Returns}
+\sphinxAtStartPar
+Cross\sphinxhyphen{}correlation coefficient indicating similarity between the two maps.
+
+\sphinxlineitem{Return type}
+\sphinxAtStartPar
+float
+
+\end{description}\end{quote}
+
 \end{fulllineitems}
 
 \index{write\_torusmap\_to\_file() (src.BagelFitter.BagelFitter method)@\spxentry{write\_torusmap\_to\_file()}\spxextra{src.BagelFitter.BagelFitter method}}
@@ -489,7 +522,7 @@ Plots the histogram of voxel intensity values in the density map.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.BagelFitter.BagelFitter.write_torusmap_to_file}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_torusmap\_to\_file}}}{\sphinxparam{\DUrole{n}{outmap\_fname}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_torusmap\_to\_file}}}{\sphinxparam{\DUrole{n}{outmap\_fname}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{str}}}{{ $\rightarrow$ None}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Saves the torus density map to a file.
@@ -507,8 +540,8 @@ Saves the torus density map to a file.
 
 
 
-\subsection{src.Torus module}
-\label{\detokenize{src:module-src.Torus}}\label{\detokenize{src:src-torus-module}}\index{module@\spxentry{module}!src.Torus@\spxentry{src.Torus}}\index{src.Torus@\spxentry{src.Torus}!module@\spxentry{module}}
+\subsection{Torus Class}
+\label{\detokenize{src:module-src.Torus}}\label{\detokenize{src:torus-class}}\index{module@\spxentry{module}!src.Torus@\spxentry{src.Torus}}\index{src.Torus@\spxentry{src.Torus}!module@\spxentry{module}}
 \sphinxAtStartPar
 Summary
 \index{Torus (class in src.Torus)@\spxentry{Torus}\spxextra{class in src.Torus}}
@@ -516,7 +549,7 @@ Summary
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.Torus.Torus}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class\DUrole{w}{ }}}\sphinxcode{\sphinxupquote{src.Torus.}}\sphinxbfcode{\sphinxupquote{Torus}}}{\sphinxparam{\DUrole{n}{R}}\sphinxparamcomma \sphinxparam{\DUrole{n}{r}}\sphinxparamcomma \sphinxparam{\DUrole{n}{thickness}}\sphinxparamcomma \sphinxparam{\DUrole{n}{extension}\DUrole{o}{=}\DUrole{default_value}{0.0}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class\DUrole{w}{ }}}\sphinxcode{\sphinxupquote{src.Torus.}}\sphinxbfcode{\sphinxupquote{Torus}}}{\sphinxparam{\DUrole{n}{R}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{r}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{thickness}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{extension}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}\DUrole{w}{ }\DUrole{o}{=}\DUrole{w}{ }\DUrole{default_value}{0.0}}}{}
 \pysigstopsignatures
 \sphinxAtStartPar
 Bases: \sphinxcode{\sphinxupquote{object}}
@@ -636,7 +669,7 @@ Any
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.Torus.Torus.contains_point}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_point}}}{\sphinxparam{\DUrole{n}{x}}\sphinxparamcomma \sphinxparam{\DUrole{n}{y}}\sphinxparamcomma \sphinxparam{\DUrole{n}{z}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_point}}}{\sphinxparam{\DUrole{n}{x}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{y}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{z}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}}{{ $\rightarrow$ bool}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Determines whether a point (x, y, z) lies within the toroidal volume.
@@ -673,7 +706,7 @@ bool
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.Torus.Torus.contains_point2}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_point2}}}{\sphinxparam{\DUrole{n}{x}}\sphinxparamcomma \sphinxparam{\DUrole{n}{y}}\sphinxparamcomma \sphinxparam{\DUrole{n}{z}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{contains\_point2}}}{\sphinxparam{\DUrole{n}{x}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{y}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{z}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}}{{ $\rightarrow$ bool}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Alternative method to check if a point (x, y, z) lies within the toroidal volume.
@@ -710,7 +743,7 @@ bool
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{src:src.Torus.Torus.distance}}
 \pysigstartsignatures
-\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{distance}}}{\sphinxparam{\DUrole{n}{x}}\sphinxparamcomma \sphinxparam{\DUrole{n}{y}}\sphinxparamcomma \sphinxparam{\DUrole{n}{z}}\sphinxparamcomma \sphinxparam{\DUrole{n}{d2\_xy}}}{}
+\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{distance}}}{\sphinxparam{\DUrole{n}{x}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{y}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{z}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}\sphinxparamcomma \sphinxparam{\DUrole{n}{d2\_xy}\DUrole{p}{:}\DUrole{w}{ }\DUrole{n}{float}}}{{ $\rightarrow$ float}}
 \pysigstopsignatures
 \sphinxAtStartPar
 Computes the shortest distance from a point (x, y, z) to the torus.
@@ -750,9 +783,74 @@ float
 \end{fulllineitems}
 
 
+\sphinxstepscope
 
-\subsection{version module}
-\label{\detokenize{src:module-version}}\label{\detokenize{src:version-module}}\index{module@\spxentry{module}!version@\spxentry{version}}\index{version@\spxentry{version}!module@\spxentry{module}}
+
+\section{Examples}
+\label{\detokenize{examples:examples}}\label{\detokenize{examples::doc}}
+
+\subsection{examples}
+\label{\detokenize{examples:id1}}\index{module@\spxentry{module}!examples.examples@\spxentry{examples.examples}}\index{examples.examples@\spxentry{examples.examples}!module@\spxentry{module}}\phantomsection\label{\detokenize{examples:module-examples.examples}}
+\sphinxAtStartPar
+Exanple script for generating and scoring torus maps in nuclear membrane fitting.
+\index{generate\_bestfit\_torus\_map() (in module examples.examples)@\spxentry{generate\_bestfit\_torus\_map()}\spxextra{in module examples.examples}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{examples:examples.examples.generate_bestfit_torus_map}}
+\pysigstartsignatures
+\pysiglinewithargsret{\sphinxcode{\sphinxupquote{examples.examples.}}\sphinxbfcode{\sphinxupquote{generate\_bestfit\_torus\_map}}}{}{}
+\pysigstopsignatures
+\sphinxAtStartPar
+Fits several torus models onto the nuclear membrane and saves the best fit.
+\begin{quote}\begin{description}
+\sphinxlineitem{Returns}
+\sphinxAtStartPar
+None
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{generate\_binary\_torus\_map() (in module examples.examples)@\spxentry{generate\_binary\_torus\_map()}\spxextra{in module examples.examples}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{examples:examples.examples.generate_binary_torus_map}}
+\pysigstartsignatures
+\pysiglinewithargsret{\sphinxcode{\sphinxupquote{examples.examples.}}\sphinxbfcode{\sphinxupquote{generate\_binary\_torus\_map}}}{}{}
+\pysigstopsignatures
+\sphinxAtStartPar
+Generates a binary torus map using predefined torus parameters and saves it to a file.
+\begin{quote}\begin{description}
+\sphinxlineitem{Returns}
+\sphinxAtStartPar
+None
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{score\_torus\_map\_with\_experimental\_map() (in module examples.examples)@\spxentry{score\_torus\_map\_with\_experimental\_map()}\spxextra{in module examples.examples}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{examples:examples.examples.score_torus_map_with_experimental_map}}
+\pysigstartsignatures
+\pysiglinewithargsret{\sphinxcode{\sphinxupquote{examples.examples.}}\sphinxbfcode{\sphinxupquote{score\_torus\_map\_with\_experimental\_map}}}{}{}
+\pysigstopsignatures
+\sphinxAtStartPar
+Compares a generated torus map with an experimental map using a scoring function.
+\begin{quote}\begin{description}
+\sphinxlineitem{Returns}
+\sphinxAtStartPar
+None
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+
+\section{version}
+\label{\detokenize{modules:module-version}}\label{\detokenize{modules:version}}\index{module@\spxentry{module}!version@\spxentry{version}}\index{version@\spxentry{version}!module@\spxentry{module}}
 \sphinxAtStartPar
 This function provides the BagelFit version number
 
@@ -777,12 +875,15 @@ This function provides the BagelFit version number
 \renewcommand{\indexname}{Python Module Index}
 \begin{sphinxtheindex}
 \let\bigletter\sphinxstyleindexlettergroup
+\bigletter{e}
+\item\relax\sphinxstyleindexentry{examples.examples}\sphinxstyleindexpageref{examples:\detokenize{module-examples.examples}}
+\indexspace
 \bigletter{s}
 \item\relax\sphinxstyleindexentry{src.BagelFitter}\sphinxstyleindexpageref{src:\detokenize{module-src.BagelFitter}}
 \item\relax\sphinxstyleindexentry{src.Torus}\sphinxstyleindexpageref{src:\detokenize{module-src.Torus}}
 \indexspace
 \bigletter{v}
-\item\relax\sphinxstyleindexentry{version}\sphinxstyleindexpageref{src:\detokenize{module-version}}
+\item\relax\sphinxstyleindexentry{version}\sphinxstyleindexpageref{modules:\detokenize{module-version}}
 \end{sphinxtheindex}
 
 \renewcommand{\indexname}{Index}

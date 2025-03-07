@@ -16,7 +16,7 @@ class Torus:
 		dmap (Any): Data map for storing computed values (if applicable).
 	"""
 	
-	def __init__(self, R, r, thickness, extension=0.0):
+	def __init__(self, R: float, r: float, thickness: float, extension: float = 0.0):
 		"""
 		Initializes a torus with given parameters.
 		
@@ -33,7 +33,7 @@ class Torus:
 		self.eps = 1E-9
 		self.dmap = None
 
-	def distance(self, x, y, z, d2_xy):
+	def distance(self, x: float, y: float, z: float, d2_xy: float) -> float:
 		"""
 		Computes the shortest distance from a point (x, y, z) to the torus.
 		
@@ -58,7 +58,7 @@ class Torus:
 
 		return sqrt(dz**2 + d_tx**2 + d_ty**2)
 
-	def contains_point(self, x, y, z):
+	def contains_point(self, x: float, y: float, z: float) -> bool:
 		"""
 		Determines whether a point (x, y, z) lies within the toroidal volume.
 		
@@ -87,7 +87,7 @@ class Torus:
 			return int(RR > self.R and abs(z) >= self.r - self.thickness)
 	
 
-	def contains_point2(self, x, y, z):
+	def contains_point2(self, x: float, y: float, z: float) -> bool:
 		"""
 		Alternative method to check if a point (x, y, z) lies within the toroidal volume.
 		

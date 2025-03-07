@@ -6,3 +6,12 @@ BagelFit
 
    src
    examples
+
+
+
+version
+--------------------------------------------
+.. automodule:: version
+   :members:
+   :undoc-members:
+   :show-inheritance:

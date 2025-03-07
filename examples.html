@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BagelFit &mdash; BagelFit 1.0 documentation</title>
+  <title>Examples &mdash; BagelFit 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -18,7 +18,8 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="BagelFitter" href="src.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,8 +42,21 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">BagelFit</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">BagelFit</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.html">BagelFitter</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples.examples.generate_bestfit_torus_map"><code class="docutils literal notranslate"><span class="pre">generate_bestfit_torus_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples.examples.generate_binary_torus_map"><code class="docutils literal notranslate"><span class="pre">generate_binary_torus_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples.examples.score_torus_map_with_experimental_map"><code class="docutils literal notranslate"><span class="pre">score_torus_map_with_experimental_map()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-version">version</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -59,7 +73,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">BagelFit</li>
+          <li class="breadcrumb-item"><a href="modules.html">BagelFit</a></li>
+      <li class="breadcrumb-item active">Examples</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -69,20 +84,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="bagelfit">
-<h1>BagelFit<a class="headerlink" href="#bagelfit" title="Link to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
-</section>
-<section id="module-examples.example_fit">
-<span id="examples-example-fit-module"></span><h2>examples.example_fit module<a class="headerlink" href="#module-examples.example_fit" title="Link to this heading"></a></h2>
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>examples<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p id="module-examples.examples">Exanple script for generating and scoring torus maps in nuclear membrane fitting.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="examples.examples.generate_bestfit_torus_map">
+<span class="sig-prename descclassname"><span class="pre">examples.examples.</span></span><span class="sig-name descname"><span class="pre">generate_bestfit_torus_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#examples.examples.generate_bestfit_torus_map" title="Link to this definition"></a></dt>
+<dd><p>Fits several torus models onto the nuclear membrane and saves the best fit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="examples.examples.generate_binary_torus_map">
+<span class="sig-prename descclassname"><span class="pre">examples.examples.</span></span><span class="sig-name descname"><span class="pre">generate_binary_torus_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#examples.examples.generate_binary_torus_map" title="Link to this definition"></a></dt>
+<dd><p>Generates a binary torus map using predefined torus parameters and saves it to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="examples.examples.score_torus_map_with_experimental_map">
+<span class="sig-prename descclassname"><span class="pre">examples.examples.</span></span><span class="sig-name descname"><span class="pre">score_torus_map_with_experimental_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#examples.examples.score_torus_map_with_experimental_map" title="Link to this definition"></a></dt>
+<dd><p>Compares a generated torus map with an experimental map using a scoring function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="src.html" class="btn btn-neutral float-left" title="BagelFitter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 

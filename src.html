@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BagelFit &mdash; BagelFit 1.0 documentation</title>
+  <title>BagelFitter &mdash; BagelFit 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -19,6 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
     <link rel="prev" title="BagelFit" href="modules.html" /> 
 </head>
 
@@ -44,19 +45,19 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">BagelFit</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">BagelFit</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-src.BagelFitter">src.BagelFitter module</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">BagelFitter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-src.BagelFitter">BagelFitter Class</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#src.BagelFitter.BagelFitter"><code class="docutils literal notranslate"><span class="pre">BagelFitter</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-src.Torus">src.Torus module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-src.Torus">Torus Class</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#src.Torus.Torus"><code class="docutils literal notranslate"><span class="pre">Torus</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-version">version module</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-version">version</a></li>
 </ul>
 </li>
 </ul>
@@ -76,7 +77,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="modules.html">BagelFit</a></li>
-      <li class="breadcrumb-item active">BagelFit</li>
+      <li class="breadcrumb-item active">BagelFitter</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/src.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,13 +87,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="bagelfit">
-<h1>BagelFit<a class="headerlink" href="#bagelfit" title="Link to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
-</section>
+  <section id="bagelfitter">
+<h1>BagelFitter<a class="headerlink" href="#bagelfitter" title="Link to this heading"></a></h1>
 <section id="module-src.BagelFitter">
-<span id="src-bagelfitter-module"></span><h2>src.BagelFitter module<a class="headerlink" href="#module-src.BagelFitter" title="Link to this heading"></a></h2>
+<span id="bagelfitter-class"></span><h2>BagelFitter Class<a class="headerlink" href="#module-src.BagelFitter" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.BagelFitter.</span></span><span class="sig-name descname"><span class="pre">BagelFitter</span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter" title="Link to this definition"></a></dt>
@@ -166,7 +164,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.calculate_dice_coefficient">
-<span class="sig-name descname"><span class="pre">calculate_dice_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dmap1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmap2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.calculate_dice_coefficient" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">calculate_dice_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dmap1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DensityMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dmap2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DensityMap</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.calculate_dice_coefficient" title="Link to this definition"></a></dt>
 <dd><p>Computes the Dice Coefficient (F1 Score) for binary overlap between two density maps.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -186,7 +184,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.create_blank_density_map">
-<span class="sig-name descname"><span class="pre">create_blank_density_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_voxels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.create_blank_density_map" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">create_blank_density_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_voxels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DensityMap</span></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.create_blank_density_map" title="Link to this definition"></a></dt>
 <dd><p>Creates an empty density map centered at (0,0,0).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -203,7 +201,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.fill_binary_density">
-<span class="sig-name descname"><span class="pre">fill_binary_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">torus</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.fill_binary_density" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fill_binary_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">torus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.Torus.Torus" title="src.Torus.Torus"><span class="pre">Torus</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.fill_binary_density" title="Link to this definition"></a></dt>
 <dd><p>Generates a binary density map based on the torus parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -214,7 +212,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.fill_nonbinary_density">
-<span class="sig-name descname"><span class="pre">fill_nonbinary_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">torus</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.fill_nonbinary_density" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fill_nonbinary_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">torus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#src.Torus.Torus" title="src.Torus.Torus"><span class="pre">Torus</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.fill_nonbinary_density" title="Link to this definition"></a></dt>
 <dd><p>Generates a non-binary density (extracted from the input map) map based on the torus parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -225,7 +223,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.fit_binary_torus">
-<span class="sig-name descname"><span class="pre">fit_binary_torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tor_R_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(670,</span> <span class="pre">680,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_r_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(160,</span> <span class="pre">180,</span> <span class="pre">20)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_th_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(85.0,</span> <span class="pre">95,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.fit_binary_torus" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit_binary_torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tor_R_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(670,</span> <span class="pre">680,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_r_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(160,</span> <span class="pre">180,</span> <span class="pre">20)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_th_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(85.0,</span> <span class="pre">95,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.Torus.Torus" title="src.Torus.Torus"><span class="pre">Torus</span></a></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.fit_binary_torus" title="Link to this definition"></a></dt>
 <dd><p>Fits a binary torus to the density map by searching for optimal parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -247,7 +245,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.fit_nonbinary_torus">
-<span class="sig-name descname"><span class="pre">fit_nonbinary_torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tor_R_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(670,</span> <span class="pre">680,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_r_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(160,</span> <span class="pre">180,</span> <span class="pre">20)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_th_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(85.0,</span> <span class="pre">95,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.fit_nonbinary_torus" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit_nonbinary_torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tor_R_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(670,</span> <span class="pre">680,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_r_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(160,</span> <span class="pre">180,</span> <span class="pre">20)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_th_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(85.0,</span> <span class="pre">95,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.Torus.Torus" title="src.Torus.Torus"><span class="pre">Torus</span></a></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.fit_nonbinary_torus" title="Link to this definition"></a></dt>
 <dd><p>Fits a non-binary torus to the density map by searching for optimal parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -269,19 +267,18 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.generate_binary_torus">
-<span class="sig-name descname"><span class="pre">generate_binary_torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tor_R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_th</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundingbox_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2240</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voxel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outmap_fname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torus_yeast_fitted.mrc'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.generate_binary_torus" title="Link to this definition"></a></dt>
-<dd><p>Fits a binary torus to the density map by searching for optimal parameters.</p>
+<span class="sig-name descname"><span class="pre">generate_binary_torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tor_R</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tor_th</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundingbox_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2240</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voxel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outmap_fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'torus_yeast_fitted.mrc'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#src.Torus.Torus" title="src.Torus.Torus"><span class="pre">Torus</span></a></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.generate_binary_torus" title="Link to this definition"></a></dt>
+<dd><p>Generates and writes a binary torus density map based on input parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tor_R_range</strong> (<em>float</em>) – Major radius of the torus.</p></li>
-<li><p><strong>tor_r_range</strong> (<em>float</em>) – Minor radius of the torus.</p></li>
-<li><p><strong>tor_th_range</strong> (<em>float</em>) – Thickness of the bilipid layer.</p></li>
+<li><p><strong>tor_R</strong> (<em>float</em>) – Major radius of the torus.</p></li>
+<li><p><strong>tor_r</strong> (<em>float</em>) – Minor radius of the torus.</p></li>
+<li><p><strong>tor_th</strong> (<em>float</em>) – Thickness of the bilipid layer.</p></li>
 <li><p><strong>extension</strong> (<em>float</em><em>, </em><em>optional</em>) – Additional extension factor (default is 0.0).</p></li>
-<li><p><strong>tor_th_range</strong> – Thickness of the bilipid layer.</p></li>
-<li><p><strong>boundingbox_length</strong> (<em>float</em><em>, </em><em>optional</em>) – Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å</p></li>
-<li><p><strong>voxel_size</strong> (<em>float</em><em>, </em><em>optional</em>) – Individual voxel size in the output map file. Default value 10 Å</p></li>
-<li><p><strong>outmap_fname</strong> (<em>str</em><em>, </em><em>optional</em>) – ouput map file name of the torus. Default is torus_yeast_fitted.mrc in current directory</p></li>
+<li><p><strong>boundingbox_length</strong> (<em>float</em><em>, </em><em>optional</em>) – Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å.</p></li>
+<li><p><strong>voxel_size</strong> (<em>float</em><em>, </em><em>optional</em>) – Individual voxel size in the output map file. Default value 10 Å.</p></li>
+<li><p><strong>outmap_fname</strong> (<em>str</em><em>, </em><em>optional</em>) – Output map file name of the torus. Default is “torus_yeast_fitted.mrc” in the current directory.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -295,23 +292,47 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.load_exprimental_map">
-<span class="sig-name descname"><span class="pre">load_exprimental_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_map_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voxel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.load_exprimental_map" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">load_exprimental_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_map_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voxel_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.load_exprimental_map" title="Link to this definition"></a></dt>
+<dd><p>Loads an experimental density map for processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_map_path</strong> (<em>str</em>) – Path to the input density map file.</p></li>
+<li><p><strong>voxel_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of each voxel (default is determined from the map).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.plot_voxel_values">
-<span class="sig-name descname"><span class="pre">plot_voxel_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.plot_voxel_values" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot_voxel_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.plot_voxel_values" title="Link to this definition"></a></dt>
 <dd><p>Plots the histogram of voxel intensity values in the density map.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.score_torus_maps">
-<span class="sig-name descname"><span class="pre">score_torus_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.score_torus_maps" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">score_torus_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.score_torus_maps" title="Link to this definition"></a></dt>
+<dd><p>Computes the cross-correlation coefficient between two torus maps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>map1</strong> (<em>str</em>) – Path to the first torus density map.</p></li>
+<li><p><strong>map2</strong> (<em>str</em>) – Path to the second torus density map.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Cross-correlation coefficient indicating similarity between the two maps.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.BagelFitter.BagelFitter.write_torusmap_to_file">
-<span class="sig-name descname"><span class="pre">write_torusmap_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outmap_fname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.BagelFitter.BagelFitter.write_torusmap_to_file" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">write_torusmap_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outmap_fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.BagelFitter.BagelFitter.write_torusmap_to_file" title="Link to this definition"></a></dt>
 <dd><p>Saves the torus density map to a file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -324,11 +345,11 @@
 
 </section>
 <section id="module-src.Torus">
-<span id="src-torus-module"></span><h2>src.Torus module<a class="headerlink" href="#module-src.Torus" title="Link to this heading"></a></h2>
+<span id="torus-class"></span><h2>Torus Class<a class="headerlink" href="#module-src.Torus" title="Link to this heading"></a></h2>
 <p>Summary</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.Torus.Torus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.Torus.</span></span><span class="sig-name descname"><span class="pre">Torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.Torus.Torus" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.Torus.</span></span><span class="sig-name descname"><span class="pre">Torus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.Torus.Torus" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represents a toroidal shape characterized by its major radius (R), minor radius (r), and thickness.</p>
 <dl class="py attribute">
@@ -399,7 +420,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.Torus.Torus.contains_point">
-<span class="sig-name descname"><span class="pre">contains_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.Torus.Torus.contains_point" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">contains_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.Torus.Torus.contains_point" title="Link to this definition"></a></dt>
 <dd><p>Determines whether a point (x, y, z) lies within the toroidal volume.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -420,7 +441,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.Torus.Torus.contains_point2">
-<span class="sig-name descname"><span class="pre">contains_point2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.Torus.Torus.contains_point2" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">contains_point2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.Torus.Torus.contains_point2" title="Link to this definition"></a></dt>
 <dd><p>Alternative method to check if a point (x, y, z) lies within the toroidal volume.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -441,7 +462,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.Torus.Torus.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d2_xy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.Torus.Torus.distance" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d2_xy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#src.Torus.Torus.distance" title="Link to this definition"></a></dt>
 <dd><p>Computes the shortest distance from a point (x, y, z) to the torus.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -464,10 +485,6 @@
 </dd></dl>
 
 </section>
-<section id="module-version">
-<span id="version-module"></span><h2>version module<a class="headerlink" href="#module-version" title="Link to this heading"></a></h2>
-<p>This function provides the BagelFit version number</p>
-</section>
 </section>
 
 
@@ -475,6 +492,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="modules.html" class="btn btn-neutral float-left" title="BagelFit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

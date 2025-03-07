@@ -1,13 +1,9 @@
-BagelFit
+Examples
 ==========
 
-Submodules
-----------
-
-examples.example_fit module
+examples
 ----------------------------------
-
-.. automodule:: examples.example_fit
+.. automodule:: examples.examples
    :members:
    :undoc-members:
    :show-inheritance:

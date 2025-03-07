@@ -98,6 +98,21 @@
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fitter</span><span class="o">=</span> <span class="n">bf</span><span class="o">.</span><span class="n">BagelFitter</span><span class="p">()</span>
+
+<span class="n">fitter</span><span class="o">.</span><span class="n">load_exprimental_map</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s2">&quot;Yeast_C8_Double_MR_center.mrc&quot;</span> <span class="p">))</span>
+
+<span class="n">tor_R_range</span><span class="o">=</span><span class="p">(</span><span class="mi">660</span><span class="p">,</span> <span class="mi">670</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="n">tor_r_range</span><span class="o">=</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+<span class="n">tor_th_range</span><span class="o">=</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="n">extension</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">best_torus</span> <span class="o">=</span> <span class="n">fitter</span><span class="o">.</span><span class="n">fit_binary_torus</span><span class="p">(</span><span class="n">tor_R_range</span><span class="p">,</span> <span class="n">tor_r_range</span><span class="p">,</span> <span class="n">tor_th_range</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
+
+<span class="n">fitter</span><span class="o">.</span><span class="n">write_torusmap_to_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s2">&quot;torus_yeast_fitted.mrc&quot;</span> <span class="p">))</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -109,6 +124,21 @@
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">script_dir</span><span class="p">,</span><span class="s2">&quot;./yeast_membrane/&quot;</span><span class="p">)</span>
+
+<span class="n">fitter</span><span class="o">=</span> <span class="n">bf</span><span class="o">.</span><span class="n">BagelFitter</span><span class="p">()</span>
+
+<span class="n">tor_R</span> <span class="o">=</span> <span class="mi">660</span><span class="p">;</span> <span class="n">tor_r</span><span class="o">=</span><span class="mi">140</span><span class="p">;</span> <span class="n">tor_th</span><span class="o">=</span><span class="mi">55</span><span class="p">;</span> <span class="n">extension</span><span class="o">=</span><span class="mf">0.0</span>
+
+<span class="n">best_torus</span> <span class="o">=</span> <span class="n">fitter</span><span class="o">.</span><span class="n">generate_binary_torus</span><span class="p">(</span>
+        <span class="n">tor_R</span><span class="p">,</span> <span class="n">tor_r</span><span class="p">,</span> <span class="n">tor_th</span><span class="p">,</span>
+        <span class="n">extension</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">boundingbox_length</span><span class="o">=</span><span class="mi">2240</span><span class="p">,</span>
+        <span class="n">voxel_size</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+        <span class="n">outmap_fname</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s2">&quot;torus_yeast_fitted.mrc&quot;</span> <span class="p">))</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -120,6 +150,16 @@
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fitter</span><span class="o">=</span> <span class="n">bf</span><span class="o">.</span><span class="n">BagelFitter</span><span class="p">()</span>
+
+<span class="n">mapfile1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s2">&quot;Yeast_C8_Double_MR_center.mrc&quot;</span> <span class="p">)</span>
+
+<span class="n">mapfile2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s2">&quot;torus_yeast_fitted.mrc&quot;</span> <span class="p">)</span>
+
+<span class="n">fitter</span><span class="o">.</span><span class="n">score_torus_maps</span><span class="p">(</span><span class="n">mapfile1</span><span class="p">,</span> <span class="n">mapfile2</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

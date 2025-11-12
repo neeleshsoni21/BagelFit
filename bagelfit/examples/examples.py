@@ -1,5 +1,5 @@
 """
-Exanple script for generating and scoring torus maps in nuclear membrane fitting.
+Example script for generating and scoring torus maps in nuclear membrane fitting.
 
 """
 import sys
@@ -125,13 +125,20 @@ def generate_bestfit_torus_map():
 
 	return
 
+
 if __name__ == '__main__':
 
+	#---------------------------------
+	# EXAMPLE CODE to generate torus and score using experimental 
+	# maps and bet the best toroid map and parameters
 	generate_binary_torus_map()
 
 	score_torus_map_with_experimental_map()
 
 	generate_bestfit_torus_map()
+	#---------------------------------
+
+
 
 
 

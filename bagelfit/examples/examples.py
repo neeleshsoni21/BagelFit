@@ -35,6 +35,7 @@ def generate_binary_torus_map():
 	import bagelfit as bf
 
 	data_path = os.path.join(script_dir,"./yeast_membrane/")
+	print(data_path)
 	#-----------------------------------------------------#
 	# Write a torus map using Torus parameters
 	#-----------------------------------------------------#

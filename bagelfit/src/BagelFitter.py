@@ -115,9 +115,9 @@ class BagelFitter:
 		for vox in range(0,num_vox):
 
 			#Getting individual values per dimension
-			x = self.dmap_out.get_location_in_dim_by_voxel(vox, 0)
-			y = self.dmap_out.get_location_in_dim_by_voxel(vox, 1)
-			z = self.dmap_out.get_location_in_dim_by_voxel(vox, 2)
+			x = self.dmap_out.get_location_in_dim_by_voxel(vox, 0) + self.voxel_size/2
+			y = self.dmap_out.get_location_in_dim_by_voxel(vox, 1) + self.voxel_size/2
+			z = self.dmap_out.get_location_in_dim_by_voxel(vox, 2) + self.voxel_size/2
 
 			if torus.contains_point(x, y, z):
 				if sqrt(x**2 + y**2) < xy_max_rad:

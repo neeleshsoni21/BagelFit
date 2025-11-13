@@ -250,7 +250,7 @@ class BagelFitter:
 			
 			return self.best_torus
 
-	def generate_binary_torus(self, tor_R: float, tor_r: float, tor_th: float, extension: float = 0.0, boundingbox_length: float = 2240, voxel_size: float = 10, outmap_fname: str = "torus_yeast_fitted.mrc") -> Torus:
+	def generate_binary_torus(self, tor_R: float, tor_r: float, tor_th: float, extension: float = 0.0, boundingbox_length: float = 2240, voxel_size: float = 10, outmap_fname: str = "torus_yeast_fitted.mrc", writemap: bool = True) -> Torus:
 		"""
 		Generates and writes a binary torus density map based on input parameters.
 		
@@ -284,7 +284,9 @@ class BagelFitter:
 			self.fill_binary_density(torus)
 
 		self.best_torus = torus
-		IMP.em.write_map(self.dmap_out, outmap_fname)
+
+		if writemap==True:
+			IMP.em.write_map(self.dmap_out, outmap_fname)
 		
 		print(f"Torus with Parameters: R={self.best_torus.R}, r={self.best_torus.r}, thickness={self.best_torus.thickness}")
 		print(f"Execution Time: {time() - start_time2:.4f} seconds")

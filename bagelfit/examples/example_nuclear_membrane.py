@@ -1,6 +1,16 @@
 """
 Example script for generating and scoring torus maps in nuclear membrane fitting.
 
+This script demonstrates how to:
+- Generate single or multiple (binary) torus occupancy maps.
+- Generate a non-binary (density/weighted) torus map aligned to an experimental map.
+- Score a generated torus map against an experimental reference map.
+- Fit torus parameters by grid search and export the best-fit torus map.
+
+Notes:
+- "Binary torus map" means voxels are labeled as inside/outside the torus (0/1).
+- "Non-binary torus map" means voxels contain continuous density values (not just 0/1).
+- `extension` is used to expand the modeled membrane region beyond the base torus.
 """
 import sys
 import os
@@ -9,272 +19,351 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 bagelfit_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
 sys.path.append(bagelfit_root)
 
+
 def generate_binary_torus_map(boundingbox, extension):
 	"""
-	Generates a binary torus map using predefined torus parameters and saves it to a file.
-	
+	Generate a single *binary* torus occupancy map and save it to disk.
+
+	Args:
+		boundingbox (float | int):
+			Side length of the (typically cubic) bounding box in the same units as
+			the torus parameters (e.g., Angstroms).
+		extension (float):
+			Additional radial/planar extension used to expand the modeled membrane
+			region around the torus (implementation-specific to bagelfit).
+
 	Returns:
 		None
 
-	Examples:
+	Example:
 		.. code-block:: python
 
-			data_path = os.path.join(script_dir,"./yeast_membrane/")
+			data_path = os.path.join(script_dir, "./yeast_membrane/")
+			fitter = bf.BagelFitter()
 
-			fitter= bf.BagelFitter()
-
-			tor_R = 660; tor_r=140; tor_th=55; extension=0.0
+			tor_R = 660
+			tor_r = 140
+			tor_th = 55
+			extension = 0.0
 
 			best_torus = fitter.generate_binary_torus(
-				tor_R, tor_r, tor_th, 
-				extension=0.0, 
-				boundingbox_length=2240, 
-				voxel_size=10.0, 
-				outmap_fname=os.path.join(data_path,"torus_yeast_fitted.mrc" ))
+				tor_R, tor_r, tor_th,
+				extension=extension,
+				boundingbox_length=2240,
+				voxel_size=10.0,
+				outmap_fname=os.path.join(data_path, "torus_yeast_fitted.mrc"),
+			)
 	"""
 	import bagelfit as bf
 
-	data_path = os.path.join(script_dir,"./yeast_membrane/")
+	data_path = os.path.join(script_dir, "./yeast_membrane/")
 	print(data_path)
-	#-----------------------------------------------------#
-	# Write a torus map using Torus parameters
-	#-----------------------------------------------------#
-	fitter= bf.BagelFitter()
 
-	tor_R = 650; tor_r=125; tor_th=40;
+	# -----------------------------------------------------#
+	# Generate and write a *binary* torus map from parameters
+	# -----------------------------------------------------#
+	fitter = bf.BagelFitter()
+
+	tor_R = 650
+	tor_r = 125
+	tor_th = 40
+
+	# Writes a binary occupancy map (.mrc) where voxels inside the torus region are 1.
 	best_torus = fitter.generate_binary_torus(
-		tor_R, tor_r, tor_th, 
-		extension=extension, 
-		boundingbox_length=boundingbox, 
-		voxel_size=10.0, 
-		outmap_fname=os.path.join(data_path,"torus_yeast_fitted.mrc" ))
+		tor_R, tor_r, tor_th,
+		extension=extension,
+		boundingbox_length=boundingbox,
+		voxel_size=10.0,
+		outmap_fname=os.path.join(data_path, "torus_yeast_fitted.mrc"),
+	)
 
 	return
+
 
 def generate_two_binary_torus_map():
+	"""
+	Generate a *binary* map containing two toroids (two centers) and save it to disk.
 
+	This example uses a rectangular bounding box and places two torus centers along X.
+
+	Returns:
+		None
+	"""
 	import bagelfit as bf
 
-	data_path = os.path.join(script_dir,"./yeast_membrane/")
+	data_path = os.path.join(script_dir, "./yeast_membrane/")
 	print(data_path)
-	#-----------------------------------------------------#
-	# Write a torus map using Torus parameters
-	#-----------------------------------------------------#
-	fitter= bf.BagelFitter()
 
-	tor_R = 650; tor_r=125; tor_th=40;
+	# -----------------------------------------------------#
+	# Generate and write a *binary* multi-torus map
+	# -----------------------------------------------------#
+	fitter = bf.BagelFitter()
+
+	tor_R = 650
+	tor_r = 125
+	tor_th = 40
+
+	# Desired center-to-center spacing between toroids
 	Inter_NPC_distance = 1500
-	ext_distance = Inter_NPC_distance/2.0 - tor_R
+
+	# How much extra "reach" is needed so the extended membrane spans the gap
+	# between two toroids (conceptually: half-distance minus major radius).
+	ext_distance = Inter_NPC_distance / 2.0 - tor_R
+
+	# Overall map size control (not directly used below since rectangular_bb is provided).
 	boundingbox = 3000
-	#THIS extension to torus will cover the entire rectangular bounding box of length: Inter_NPC_distance
-	#ext_R = (2*(tor_R+ext_distance)**2)**0.5 
+
+	# Extension used to expand the modeled membrane region around each torus.
+	# This can be tuned to ensure coverage of the rectangular bounding box.
+	# ext_R = (2*(tor_R+ext_distance)**2)**0.5  # optional derived estimate
 	ext_R = 1000.0
-	
+
 	best_torus = fitter.generate_multiple_binary_torus(
-		tor_R, tor_r, tor_th, 
-		extension=ext_R, 
-		rectangular_bb = [(-1500,-750,-1000),(1500,750,500)],
-		#torus_centers=[(-1500, 0.0, 0.0),(0.0, 0.0, 0.0),(1500, 0.0, 0.0)],
-		torus_centers=[(-750.0, 0.0, 0.0),(750, 0.0, 0.0)],
-		voxel_size=10.0, 
-		outmap_fname=os.path.join(data_path,"multi_torus_yeast.mrc" ))
+		tor_R, tor_r, tor_th,
+		extension=ext_R,
+		# Explicit rectangular bounding box: [(xmin,ymin,zmin), (xmax,ymax,zmax)]
+		rectangular_bb=[(-1500, -750, -1000), (1500, 750, 500)],
+		# Two torus centers separated along X
+		torus_centers=[(-750.0, 0.0, 0.0), (750.0, 0.0, 0.0)],
+		voxel_size=10.0,
+		outmap_fname=os.path.join(data_path, "multi_torus_yeast.mrc"),
+	)
 
 	return
+
 
 def generate_four_binary_torus_map():
+	"""
+	Generate a *binary* map containing four toroids (four centers) and save it to disk.
 
+	This example uses a rectangular bounding box and places torus centers in a cross-like
+	configuration: two along X and two along Y.
+
+	Returns:
+		None
+	"""
 	import bagelfit as bf
 
-	data_path = os.path.join(script_dir,"./yeast_membrane/")
+	data_path = os.path.join(script_dir, "./yeast_membrane/")
 	print(data_path)
-	#-----------------------------------------------------#
-	# Write a torus map using Torus parameters
-	#-----------------------------------------------------#
-	fitter= bf.BagelFitter()
 
-	tor_R = 650; tor_r=125; tor_th=40;
-	#Inter_NPC_distance = 1500
-	#ext_distance = Inter_NPC_distance/2.0 - tor_R
+	# -----------------------------------------------------#
+	# Generate and write a *binary* multi-torus map
+	# -----------------------------------------------------#
+	fitter = bf.BagelFitter()
 
-	#THIS extension to torus will cover the entire rectangular bounding box of length: Inter_NPC_distance
-	#ext_R = (2*(tor_R+ext_distance)**2)**0.5 
+	tor_R = 650
+	tor_r = 125
+	tor_th = 40
+
+	# Extension used to expand the modeled membrane region around each torus.
+	# ext_R = (2*(tor_R+ext_distance)**2)**0.5  # optional derived estimate
 	ext_R = 1000.0
-	
+
 	best_torus = fitter.generate_multiple_binary_torus(
-		tor_R, tor_r, tor_th, 
-		extension=ext_R, 
-		rectangular_bb = [(-1500,-2200,-1000),(1500,2200,500)],
-		#torus_centers=[(-1500, 0.0, 0.0),(0.0, 0.0, 0.0),(1500, 0.0, 0.0)],
-		torus_centers=[(-750.0, 0.0, 0.0),(750, 0.0, 0.0),(0.0, -1300.0, 0.0),(0.0, 1300, 0.0)],
-		voxel_size=10.0, 
-		outmap_fname=os.path.join(data_path,"four_torus_yeast.mrc" ))
+		tor_R, tor_r, tor_th,
+		extension=ext_R,
+		# Explicit rectangular bounding box: [(xmin,ymin,zmin), (xmax,ymax,zmax)]
+		rectangular_bb=[(-1500, -2200, -1000), (1500, 2200, 500)],
+		# Four torus centers: two on X-axis and two on Y-axis
+		torus_centers=[
+			(-750.0, 0.0, 0.0),
+			(750.0, 0.0, 0.0),
+			(0.0, -1300.0, 0.0),
+			(0.0, 1300.0, 0.0),
+		],
+		voxel_size=10.0,
+		outmap_fname=os.path.join(data_path, "four_torus_yeast.mrc"),
+	)
 
 	return
+
 
 def generate_nonbinary_torus_map(experimental_map, boundingbox, extension):
 	"""
-	Generates a binary torus map using predefined torus parameters and saves it to a file.
-	
+	Generate a *non-binary* (continuous-density) torus map and save it to disk.
+
+	This function loads an experimental map first, then generates a non-binary torus
+	map (e.g., weighted density rather than 0/1 occupancy).
+
+	Args:
+		experimental_map (str):
+			Path to the experimental .mrc map used for alignment/resampling context.
+		boundingbox (float | int):
+			Side length of the output bounding box (must be compatible with the loaded
+			experimental map and/or the library's constraints).
+		extension (float):
+			Additional extension used to expand the modeled membrane region around the torus.
+
 	Returns:
 		None
 
-	Examples:
+	Example:
 		.. code-block:: python
 
-			data_path = os.path.join(script_dir,"./yeast_membrane/")
+			data_path = os.path.join(script_dir, "./yeast_membrane/")
+			fitter = bf.BagelFitter()
 
-			fitter= bf.BagelFitter()
-
-			tor_R = 660; tor_r=140; tor_th=55; extension=0.0
+			fitter.load_exprimental_map(
+				input_map_path=experimental_map,
+				voxel_size=10.0,
+			)
 
 			best_torus = fitter.generate_nonbinary_torus(
-				tor_R, tor_r, tor_th, 
-				extension=0.0, 
-				boundingbox_length=2240, 
-				voxel_size=10.0, 
-				outmap_fname=os.path.join(data_path,"torus_yeast_fitted.mrc" ))
+				tor_R, tor_r, tor_th,
+				extension=extension,
+				boundingbox_length=boundingbox,
+				voxel_size=10.0,
+				outmap_fname=os.path.join(data_path, "torus_yeast_fitted.mrc"),
+			)
 	"""
 	import bagelfit as bf
 
-	data_path = os.path.join(script_dir,"./yeast_membrane/")
+	data_path = os.path.join(script_dir, "./yeast_membrane/")
 	print(data_path)
-	#-----------------------------------------------------#
-	# Write a torus map using Torus parameters
-	#-----------------------------------------------------#
-	fitter= bf.BagelFitter()
+
+	# -----------------------------------------------------#
+	# Load experimental map, then generate a non-binary torus map
+	# -----------------------------------------------------#
+	fitter = bf.BagelFitter()
 
 	fitter.load_exprimental_map(
 		input_map_path=experimental_map,
-		voxel_size=10.0)
+		voxel_size=10.0,
+	)
 
-	tor_R = 650; tor_r=125; tor_th=40;
+	tor_R = 650
+	tor_r = 125
+	tor_th = 40
+
 	best_torus = fitter.generate_nonbinary_torus(
-		tor_R, tor_r, tor_th, 
-		extension=extension, 
-		boundingbox_length=boundingbox, 
-		voxel_size=10.0, 
-		outmap_fname=os.path.join(data_path,"torus_yeast_fitted.mrc" ))
+		tor_R, tor_r, tor_th,
+		extension=extension,
+		boundingbox_length=boundingbox,
+		voxel_size=10.0,
+		outmap_fname=os.path.join(data_path, "torus_yeast_fitted.mrc"),
+	)
 
 	return
 
 
-	generate_nonbinary_torus
-
 def score_torus_map_with_experimental_map():
 	"""
-	Compares a generated torus map with an experimental map using a scoring function.
-	
+	Score a generated torus map against an experimental reference map.
+
+	This uses the library's scoring function to quantify overlap/similarity between
+	two maps (e.g., experimental vs generated).
+
 	Returns:
 		None
 
-	Examples:
+	Example:
 		.. code-block:: python
 
-			fitter= bf.BagelFitter()
-
-			mapfile1 = os.path.join(data_path,"Yeast_C8_Double_MR_center.mrc" )
-			
-			mapfile2 = os.path.join(data_path,"torus_yeast_fitted.mrc" )
-			
+			fitter = bf.BagelFitter()
+			mapfile1 = os.path.join(data_path, "Yeast_C8_Double_MR_center.mrc")
+			mapfile2 = os.path.join(data_path, "torus_yeast_fitted.mrc")
 			fitter.score_torus_maps(mapfile1, mapfile2)
-
 	"""
-	#-----------------------------------------------------#
-	# Score a torus map with other torus maps or experimental maps
-	#-----------------------------------------------------#
-	fitter= bf.BagelFitter()
+	import bagelfit as bf
 
-	mapfile1 = os.path.join(data_path,"Yeast_C8_Double_MR_center.mrc" )
-	mapfile2 = os.path.join(data_path,"torus_yeast_fitted.mrc" )
+	# -----------------------------------------------------#
+	# Score a torus map against an experimental map
+	# -----------------------------------------------------#
+	data_path = os.path.join(script_dir, "./yeast_membrane/")
+	fitter = bf.BagelFitter()
+
+	mapfile1 = os.path.join(data_path, "Yeast_C8_Double_MR_center.mrc")
+	mapfile2 = os.path.join(data_path, "torus_yeast_fitted.mrc")
 	fitter.score_torus_maps(mapfile1, mapfile2)
 
 	return
 
+
 def generate_bestfit_torus_map():
 	"""
-	Fits several torus models onto the nuclear membrane and saves the best fit.
-	
+	Grid-search torus parameters against an experimental map and save the best-fit map.
+
+	This example loads an experimental map, searches over (R, r, theta) ranges, then
+	writes the highest-scoring fitted torus map to disk.
+
 	Returns:
 		None
 
-	Examples:
+	Example:
 		.. code-block:: python
 
-			fitter= bf.BagelFitter()
-			
-			fitter.load_exprimental_map(os.path.join(data_path,"Yeast_C8_Double_MR_center.mrc" ))
-			
-			tor_R_range=(660, 670, 10); 
-			tor_r_range=(140, 160, 20); 
-			tor_th_range=(55, 65, 10); 
+			fitter = bf.BagelFitter()
+			fitter.load_exprimental_map(os.path.join(data_path, "Yeast_C8_Double_MR_center.mrc"))
+
+			tor_R_range = (660, 670, 10)
+			tor_r_range = (140, 160, 20)
+			tor_th_range = (55, 65, 10)
 			extension = 0.0
-			
+
 			best_torus = fitter.fit_binary_torus(tor_R_range, tor_r_range, tor_th_range, extension)
-			
-			fitter.write_torusmap_to_file(os.path.join(data_path,"torus_yeast_fitted.mrc" ))
+			fitter.write_torusmap_to_file(os.path.join(data_path, "torus_yeast_fitted.mrc"))
 	"""
-	#-----------------------------------------------------#
-	# EXAMPLE Fit several torus onto nuclear membrane 
-	# and write the highes overlapping torus into the file
-	#-----------------------------------------------------#
+	import bagelfit as bf
 
-	fitter= bf.BagelFitter()
+	# -----------------------------------------------------#
+	# Fit torus parameters to an experimental nuclear membrane map
+	# and write the best-scoring torus map to disk.
+	# -----------------------------------------------------#
+	data_path = os.path.join(script_dir, "./yeast_membrane/")
+	fitter = bf.BagelFitter()
 
-	#Below map has 11 million voxels
-	fitter.load_exprimental_map(os.path.join(data_path,"Yeast_C8_Double_MR_center.mrc" ))
+	# Load the experimental map used as the fitting target.
+	fitter.load_exprimental_map(os.path.join(data_path, "Yeast_C8_Double_MR_center.mrc"))
 
-	tor_R_range=(660, 670, 10); tor_r_range=(140, 160, 20); tor_th_range=(55, 65, 10)
+	# Parameter ranges for grid search: (start, stop, step) or library-defined convention.
+	tor_R_range = (660, 670, 10)
+	tor_r_range = (140, 160, 20)
+	tor_th_range = (55, 65, 10)
+
 	extension = 0.0
 
+	# Fit a binary torus model (occupancy-based). Use fit_nonbinary_torus for density-based fitting if desired.
 	best_torus = fitter.fit_binary_torus(tor_R_range, tor_r_range, tor_th_range, extension)
-	#best_torus = fitter.fit_nonbinary_torus(tor_R_range, tor_r_range, tor_th_range, extension)
+	# best_torus = fitter.fit_nonbinary_torus(tor_R_range, tor_r_range, tor_th_range, extension)
 
-	fitter.write_torusmap_to_file(os.path.join(data_path,"torus_yeast_fitted.mrc" ))
+	fitter.write_torusmap_to_file(os.path.join(data_path, "torus_yeast_fitted.mrc"))
 
 	return
 
 
 if __name__ == '__main__':
 
-	#---------------------------------
-	# EXAMPLE CODE to generate torus and score using experimental 
-	# maps and bet the best toroid map and parameters
-	#generate_binary_torus_map(boundingbox=2500, extension=1000)
-	
-	#generate_nonbinary_torus_map(
-		#experimental_map='./yeast_membrane/Yeast_C8_Double_MR_center_resampled.mrc',
-		#boundingbox=3000, extension=0) #Dimension cannot be more than the experimental map for non-binary points
+	# ---------------------------------
+	# Examples: generate torus maps and/or score them against experimental data
+	# ---------------------------------
 
-	#score_torus_map_with_experimental_map()
+	# Generate a single binary torus map in a cubic bounding box
+	# generate_binary_torus_map(boundingbox=2500, extension=1000)
 
-	#generate_bestfit_torus_map()
+	# Generate a non-binary torus map using an experimental map context.
+	# Note: bounding box dimensions may need to be compatible with the experimental map.
+	# generate_nonbinary_torus_map(
+	# 	experimental_map='./yeast_membrane/Yeast_C8_Double_MR_center_resampled.mrc',
+	# 	boundingbox=3000,
+	# 	extension=0,
+	# )
 
-	#---------------------------------
+	# Score a generated torus map against an experimental map
+	# score_torus_map_with_experimental_map()
 
+	# Fit torus parameters and write the best-fit torus map
+	# generate_bestfit_torus_map()
 
-	#---------------------------------
-	# EXAMPLE code to generate extended membrane around the torus
-	#---------------------------------
-	#generate_binary_torus_map(boundingbox=2500, extension=1768) #(2(1250**2))**0.5 = 1768
+	# ---------------------------------
+	# Examples: extended membrane around one or more toroids
+	# ---------------------------------
 
+	# Example: extension chosen to cover a square domain of side 2500 (diagonal-based estimate)
+	# generate_binary_torus_map(boundingbox=2500, extension=1768)  # ~(2*(1250**2))**0.5
 
-	#---------------------------------
-	# EXAMPLE code to generate TWO torus with extended membrane around the torus
-	#---------------------------------
-	#generate_two_binary_torus_map()
+	# Generate two toroids in one map
+	# generate_two_binary_torus_map()
 
+	# Generate four toroids in one map
 	generate_four_binary_torus_map()
-
-
-	
-
-
-
-
-
-
-
-
-
-
-

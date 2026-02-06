@@ -68,6 +68,23 @@ class BagelFitter:
 		bb_new = IMP.algebra.BoundingBox3D(IMP.algebra.Vector3D(l_low, l_low, l_low), IMP.algebra.Vector3D(l_high, l_high, l_high))
 		return IMP.em.create_density_map(bb_new, self.voxel_size)
 
+	def create_rectangular_blank_density_map(self, rec_bb=[(-100,-100,-100),(100,100,100)]) -> IMP.em.DensityMap:
+		"""
+		Creates an empty density map centered at (0,0,0).
+		
+		Args:
+			n_voxels (int): Number of voxels in each dimension.
+		
+		Returns:
+			IMP.em.DensityMap: A blank density map with specified voxel size.
+		"""
+		##l_low, l_high = -int(n_voxels/2.) * self.voxel_size, int(n_voxels/2.) * self.voxel_size
+
+		lx_low, ly_low, lz_low = rec_bb[0][0], rec_bb[0][1], rec_bb[0][2]
+		lx_high, ly_high, lz_high = rec_bb[1][0], rec_bb[1][1], rec_bb[1][2]
+		bb_new = IMP.algebra.BoundingBox3D(IMP.algebra.Vector3D(lx_low, ly_low, lz_low), IMP.algebra.Vector3D(lx_high, ly_high, lz_high))
+		return IMP.em.create_density_map(bb_new, self.voxel_size)
+
 	def calculate_dice_coefficient(self, dmap1: IMP.em.DensityMap, dmap2: IMP.em.DensityMap) -> float:
 		"""
 		Computes the Dice Coefficient (F1 Score) for binary overlap between two density maps.
@@ -111,6 +128,7 @@ class BagelFitter:
 		num_vox = self.dmap_out.get_header().get_number_of_voxels()
 
 		xy_max_rad = torus.R + torus.extension
+		print(torus.extension)
 
 		for vox in range(0,num_vox):
 
@@ -120,12 +138,70 @@ class BagelFitter:
 			z = self.dmap_out.get_location_in_dim_by_voxel(vox, 2) + self.voxel_size/2
 
 			if torus.contains_point(x, y, z):
-				if sqrt(x**2 + y**2) < xy_max_rad:
+				cx, cy, _ = torus.center
+				if sqrt((x - cx)**2 + (y - cy)**2) < xy_max_rad:
+				#if sqrt(x**2 + y**2) < xy_max_rad:
 					self.dmap_out.set_value(vox, 1.0)
 				else:
 					self.dmap_out.set_value(vox, 0.0)
 			else:
 				self.dmap_out.set_value(vox, 0.0)
+
+	def fill_binary_density_with_multiple_torus_OLD(self, Tori: list) -> None:
+
+		num_vox = self.dmap_out.get_header().get_number_of_voxels()
+
+		for vox in range(0,num_vox):
+
+			#Getting individual values per dimension
+			x = self.dmap_out.get_location_in_dim_by_voxel(vox, 0) + self.voxel_size/2
+			y = self.dmap_out.get_location_in_dim_by_voxel(vox, 1) + self.voxel_size/2
+			z = self.dmap_out.get_location_in_dim_by_voxel(vox, 2) + self.voxel_size/2
+
+			inside_any = False
+			for torus in Tori:
+
+				xy_max_rad = torus.R + torus.extension
+				cx, cy, _ = torus.center
+
+				if torus.contains_point(x, y, z):
+					
+					if sqrt((x - cx)**2 + (y - cy)**2) < xy_max_rad:
+						inside_any = True
+						break;
+
+			self.dmap_out.set_value(vox, 1.0 if inside_any else 0.0)
+
+	def fill_binary_density_with_multiple_torus(self, Tori: list) -> None:
+
+		num_vox = self.dmap_out.get_header().get_number_of_voxels()
+
+		for vox in range(num_vox):
+			x = self.dmap_out.get_location_in_dim_by_voxel(vox, 0) + self.voxel_size/2
+			y = self.dmap_out.get_location_in_dim_by_voxel(vox, 1) + self.voxel_size/2
+			z = self.dmap_out.get_location_in_dim_by_voxel(vox, 2) + self.voxel_size/2
+
+			# pick nearest torus in XY (by rho)
+			best_torus = None
+			best_rho = float("inf")
+
+			for torus in Tori:
+				cx, cy, _ = torus.center
+				rho = sqrt((x - cx)**2 + (y - cy)**2)
+				if rho < best_rho:
+					best_rho = rho
+					best_torus = torus
+
+			# now evaluate only that torus
+			xy_max_rad = best_torus.R + best_torus.extension
+
+			inside = False
+			if best_rho <= xy_max_rad and best_torus.contains_point(x, y, z):
+				inside = True
+
+			self.dmap_out.set_value(vox, 1.0 if inside else 0.0)
+
+	
 
 	def fill_nonbinary_density(self, torus: Torus) -> None:
 		"""
@@ -147,9 +223,9 @@ class BagelFitter:
 		for vox in range(0,num_vox):
 
 			#Getting individual values per dimension
-			x = self.dmap.get_location_in_dim_by_voxel(vox, 0)
-			y = self.dmap.get_location_in_dim_by_voxel(vox, 1)
-			z = self.dmap.get_location_in_dim_by_voxel(vox, 2)
+			x = self.dmap.get_location_in_dim_by_voxel(vox, 0) + self.voxel_size/2
+			y = self.dmap.get_location_in_dim_by_voxel(vox, 1) + self.voxel_size/2
+			z = self.dmap.get_location_in_dim_by_voxel(vox, 2) + self.voxel_size/2
 
 			if torus.contains_point(x, y, z):
 				if sqrt(x**2 + y**2) < xy_max_rad:
@@ -282,6 +358,98 @@ class BagelFitter:
 
 			torus = Torus(tor_R, tor_r, tor_th, extension)
 			self.fill_binary_density(torus)
+
+		self.best_torus = torus
+
+		if writemap==True:
+			IMP.em.write_map(self.dmap_out, outmap_fname)
+		
+		print(f"Torus with Parameters: R={self.best_torus.R}, r={self.best_torus.r}, thickness={self.best_torus.thickness}")
+		print(f"Execution Time: {time() - start_time2:.4f} seconds")
+		
+		return self.best_torus
+
+	def generate_multiple_binary_torus(self, tor_R: float, tor_r: float, tor_th: float, extension: float = 0.0, rectangular_bb = [(-150,-150,-150),(150,150,150)], torus_centers: list = [(0.0, 0.0, 0.0)], voxel_size: float = 10, outmap_fname: str = "torus_yeast_fitted.mrc", writemap: bool = True) -> Torus:
+		"""
+		Generates and writes a binary torus density map based on input parameters.
+		
+		Args:
+			tor_R (float): Major radius of the torus.
+			tor_r (float): Minor radius of the torus.
+			tor_th (float): Thickness of the bilipid layer.
+			extension (float, optional): Additional extension factor (default is 0.0).
+			boundingbox_length (float, optional): Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å.
+			voxel_size (float, optional): Individual voxel size in the output map file. Default value 10 Å.
+			outmap_fname (str, optional): Output map file name of the torus. Default is "torus_yeast_fitted.mrc" in the current directory.
+		
+		Returns:
+			Torus: Torus object based on input parameters.
+		"""
+		self.dmap_out_binary_flag = True
+
+		self.voxel_size = voxel_size
+		
+		#rectangular_bb=[(-1500,-1500,-1500),(1500,1500,1500)]
+
+		#self.bb_length = boundingbox_length
+		#self.n_voxels = int(self.bb_length / self.voxel_size)
+
+		#self.dmap_out = self.create_blank_density_map(self.n_voxels)
+		self.dmap_out = self.create_rectangular_blank_density_map(rectangular_bb)
+
+		self.best_torus= None
+
+		start_time2 = time()
+
+		TORI = []
+		for tori_center in torus_centers:
+			Tori_i = Torus(tor_R, tor_r, tor_th, extension, center=tori_center)
+			TORI.append(Tori_i)
+
+		self.fill_binary_density_with_multiple_torus(TORI)
+
+		#self.best_torus = torus
+
+		if writemap==True:
+			IMP.em.write_map(self.dmap_out, outmap_fname)
+		
+		#print(f"Torus with Parameters: R={self.best_torus.R}, r={self.best_torus.r}, thickness={self.best_torus.thickness}")
+		print(f"Execution Time: {time() - start_time2:.4f} seconds")
+		
+		return self.best_torus
+
+	def generate_nonbinary_torus(self, tor_R: float, tor_r: float, tor_th: float, extension: float = 0.0, boundingbox_length: float = 2240, voxel_size: float = 10, outmap_fname: str = "torus_yeast_fitted.mrc", writemap: bool = True) -> Torus:
+		"""
+		Generates and writes a binary torus density map based on input parameters.
+		
+		Args:
+			tor_R (float): Major radius of the torus.
+			tor_r (float): Minor radius of the torus.
+			tor_th (float): Thickness of the bilipid layer.
+			extension (float, optional): Additional extension factor (default is 0.0).
+			boundingbox_length (float, optional): Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å.
+			voxel_size (float, optional): Individual voxel size in the output map file. Default value 10 Å.
+			outmap_fname (str, optional): Output map file name of the torus. Default is "torus_yeast_fitted.mrc" in the current directory.
+		
+		Returns:
+			Torus: Torus object based on input parameters.
+		"""
+		self.dmap_out_binary_flag = False
+
+		self.voxel_size = voxel_size
+		self.bb_length = boundingbox_length
+
+		self.n_voxels = int(self.bb_length / self.voxel_size)
+
+		self.dmap_out = self.create_blank_density_map(self.n_voxels)
+
+		self.best_torus= None
+
+		start_time2 = time()
+		for tor_R, tor_r, tor_th in [(tor_R, tor_r, tor_th)]:
+
+			torus = Torus(tor_R, tor_r, tor_th, extension)
+			self.fill_nonbinary_density(torus)
 
 		self.best_torus = torus
 

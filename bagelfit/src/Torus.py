@@ -16,7 +16,7 @@ class Torus:
 		dmap (Any): Data map for storing computed values (if applicable).
 	"""
 	
-	def __init__(self, R: float, r: float, thickness: float, extension: float = 0.0):
+	def __init__(self, R: float, r: float, thickness: float, extension: float = 0.0, center: tuple[float, float, float] = (0.0, 0.0, 0.0)):
 		"""
 		Initializes a torus with given parameters.
 		
@@ -32,6 +32,16 @@ class Torus:
 		self.extension = extension
 		self.eps = 1E-9
 		self.dmap = None
+
+		self.cx, self.cy, self.cz = center
+
+	@property
+	def center(self) -> tuple[float, float, float]:
+		return (self.cx, self.cy, self.cz)
+
+	def _to_local(self, x: float, y: float, z: float) -> tuple[float, float, float]:
+		"""Convert world coords -> torus-local coords."""
+		return x - self.cx, y - self.cy, z - self.cz
 
 	def distance(self, x: float, y: float, z: float, d2_xy: float) -> float:
 		"""
@@ -70,6 +80,9 @@ class Torus:
 		Returns:
 			bool: True if the point is inside the torus, False otherwise.
 		"""
+
+		# convert to torus-local coordinates
+		x, y, z = self._to_local(x, y, z)
 	
 		if abs(z) > self.r:  # Early exit
 			return 0

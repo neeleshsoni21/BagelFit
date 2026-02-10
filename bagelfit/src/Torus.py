@@ -5,26 +5,31 @@ from numpy import sqrt
 class Torus:
 
 	"""
-	Represents a toroidal shape characterized by its major radius (R), minor radius (r), and thickness.
+	Geometric torus used to model the nuclear membrane.
 	
-	Attributes:
-		R (float): Major radius of the torus.
-		r (float): Minor radius of the torus.
-		thickness (float): Thickness of the torus.
-		extension (float): Optional extension parameter (default is 0.0).
-		eps (float): Small constant to avoid division by zero errors.
-		dmap (Any): Data map for storing computed values (if applicable).
+	The membrane is represented as a *shell* within the torus tube: a voxel is considered
+	"inside the membrane" when it lies within a band of thickness `thickness` near the
+	outer surface of the tube (i.e., within the minor radius `r`).
+	
+	Terminology:
+	- R: major radius (distance from torus center to the tube centerline in the XY plane)
+	- r: minor radius (tube radius)
+	- thickness: membrane-shell thickness within the tube (0 < thickness <= r)
+	- extension: optional in-plane (XY) radial allowance used by map generation to include
+	  extended membrane beyond the torus ring (ρ_xy <= R + extension), where ρ_xy is the
+	  distance to the torus center in the XY plane.
 	"""
 	
-	def __init__(self, R: float, r: float, thickness: float, extension: float = 0.0, center: tuple[float, float, float] = (0.0, 0.0, 0.0)):
+	def __init__(self, R, r, thickness, extension= 0.0, center= (0.0, 0.0, 0.0)):
 		"""
-		Initializes a torus with given parameters.
+		Initialize a torus.
 		
 		Args:
-			R (float): Major radius of the torus.
-			r (float): Minor radius of the torus.
-			thickness (float): Thickness of the torus.
-			extension (float, optional): Extension parameter (default is 0.0).
+		    R: Major radius of the torus.
+		    r: Minor radius (tube radius).
+		    thickness: Membrane-shell thickness within the tube (radial band thickness).
+		    extension: Optional in-plane (XY) radial allowance used by map generation (default 0.0).
+		    center: Torus center (cx, cy, cz) in the same coordinate system as map voxels.
 		"""
 		self.R = R
 		self.r = r
@@ -36,25 +41,28 @@ class Torus:
 		self.cx, self.cy, self.cz = center
 
 	@property
-	def center(self) -> tuple[float, float, float]:
+	def center(self):
 		return (self.cx, self.cy, self.cz)
 
-	def _to_local(self, x: float, y: float, z: float) -> tuple[float, float, float]:
+	def _to_local(self, x, y, z):
 		"""Convert world coords -> torus-local coords."""
 		return x - self.cx, y - self.cy, z - self.cz
 
-	def distance(self, x: float, y: float, z: float, d2_xy: float) -> float:
+	def distance(self, x, y, z, d2_xy):
 		"""
-		Computes the shortest distance from a point (x, y, z) to the torus.
+		Compute an approximate shortest distance from a point to the torus surface.
+		
+		Notes:
+		    This implementation assumes the input coordinates are already in *torus-local*
+		    coordinates (i.e., after subtracting the torus center). The caller may pass the
+		    precomputed squared XY radius (d2_xy) for efficiency.
 		
 		Args:
-			x (float): X-coordinate of the point.
-			y (float): Y-coordinate of the point.
-			z (float): Z-coordinate of the point.
-			d2_xy (float): Squared distance from the torus center in the xy-plane.
+		    x, y, z: Torus-local coordinates of the point.
+		    d2_xy: Squared radius in the XY plane (x^2 + y^2).
 		
 		Returns:
-			float: Shortest distance from the given point to the torus.
+		    Distance (float) to the torus surface (implementation-specific approximation).
 		"""
 		
 		d_xy = sqrt(d2_xy)
@@ -68,17 +76,19 @@ class Torus:
 
 		return sqrt(dz**2 + d_tx**2 + d_ty**2)
 
-	def contains_point(self, x: float, y: float, z: float) -> bool:
+	def contains_point(self, x, y, z):
 		"""
-		Determines whether a point (x, y, z) lies within the toroidal volume.
+		Return 1 if the point lies within the torus *membrane shell*, else 0.
+		
+		A point is considered inside when:
+		- it lies within the torus tube (minor radius constraint), and
+		- it falls within the shell band defined by `thickness` near the tube boundary.
 		
 		Args:
-			x (float): X-coordinate of the point.
-			y (float): Y-coordinate of the point.
-			z (float): Z-coordinate of the point.
+		    x, y, z: World coordinates of the point.
 		
 		Returns:
-			bool: True if the point is inside the torus, False otherwise.
+		    int: 1 if inside the membrane shell, otherwise 0.
 		"""
 
 		# convert to torus-local coordinates
@@ -100,17 +110,18 @@ class Torus:
 			return int(RR > self.R and abs(z) >= self.r - self.thickness)
 	
 
-	def contains_point2(self, x: float, y: float, z: float) -> bool:
+	def contains_point2(self, x, y, z):
 		"""
-		Alternative method to check if a point (x, y, z) lies within the toroidal volume.
+		Alternative membrane-shell membership test (kept for reference).
+		
+		This method is not used by the main fitting pipeline and may be inconsistent with
+		`contains_point()`.
 		
 		Args:
-			x (float): X-coordinate of the point.
-			y (float): Y-coordinate of the point.
-			z (float): Z-coordinate of the point.
+		    x, y, z: World coordinates of the point.
 		
 		Returns:
-			bool: True if the point is inside the torus, False otherwise.
+		    int: 1 if inside the membrane shell, otherwise 0.
 		"""
 		if abs(z) <= self.r:
 			RR = sqrt(x**2 + y**2 + z**2)

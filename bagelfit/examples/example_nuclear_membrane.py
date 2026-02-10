@@ -331,7 +331,7 @@ def generate_bestfit_torus_map():
 
 	return
 
-
+ 
 if __name__ == '__main__':
 
 	# ---------------------------------

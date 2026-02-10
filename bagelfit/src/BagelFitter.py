@@ -8,18 +8,19 @@ from time import time
 import matplotlib.pyplot as plt
 from Torus import Torus
 import sys
-
+ 
 class BagelFitter:
 	"""
-	Fits a torus onto a nuclear membrane by searching for the best parameters.
+	Generate, score, and fit torus-based membrane models against an experimental density map.
 	
-	Attributes:
-		best_torus (Torus): The best-fitting torus found during the fitting process.
-		dmap (IMP.em.DensityMap): Input density map of the nuclear membrane.
-		dmap_out (IMP.em.DensityMap): Output density map after fitting.
-		dmap_out_binary_flag (bool): Flag indicating if the density map is binary.
-		input_map_path (str): Path to the input density map file.
-		voxel_size (int): Size of each voxel in the density map (default is 10).
+	Core concepts:
+	- A `Torus` defines a membrane *shell* (band of thickness `tor_th` within the tube radius `tor_r`).
+	- *Binary* maps are occupancy masks (0/1) indicating whether each voxel is inside the shell.
+	- *Non-binary* maps copy voxel densities from the experimental map inside the shell (0 outside).
+	
+	Fitting:
+	- `fit_*_torus()` performs a grid search over (R, r, thickness) and selects the parameters
+	  that maximize a similarity score (cross-correlation coefficient).
 	"""
 	def __init__(self):
 		"""
@@ -29,7 +30,7 @@ class BagelFitter:
 		self.dmap_out = None
 		self.dmap_out_binary_flag = None
 
-	def load_exprimental_map(self, input_map_path: str, voxel_size: int | None = None) -> None:
+	def load_exprimental_map(self, input_map_path, voxel_size= None):
 		"""
 		Loads an experimental density map for processing.
 		
@@ -54,7 +55,7 @@ class BagelFitter:
 			self.voxel_size = voxel_size
 		print("Voxel size of the map:",self.voxel_size)
 
-	def create_blank_density_map(self, n_voxels: int) -> IMP.em.DensityMap:
+	def create_blank_density_map(self, n_voxels):
 		"""
 		Creates an empty density map centered at (0,0,0).
 		
@@ -68,7 +69,7 @@ class BagelFitter:
 		bb_new = IMP.algebra.BoundingBox3D(IMP.algebra.Vector3D(l_low, l_low, l_low), IMP.algebra.Vector3D(l_high, l_high, l_high))
 		return IMP.em.create_density_map(bb_new, self.voxel_size)
 
-	def create_rectangular_blank_density_map(self, rec_bb=[(-100,-100,-100),(100,100,100)]) -> IMP.em.DensityMap:
+	def create_rectangular_blank_density_map(self, rec_bb=[(-100,-100,-100),(100,100,100)]):
 		"""
 		Creates an empty density map centered at (0,0,0).
 		
@@ -85,7 +86,7 @@ class BagelFitter:
 		bb_new = IMP.algebra.BoundingBox3D(IMP.algebra.Vector3D(lx_low, ly_low, lz_low), IMP.algebra.Vector3D(lx_high, ly_high, lz_high))
 		return IMP.em.create_density_map(bb_new, self.voxel_size)
 
-	def calculate_dice_coefficient(self, dmap1: IMP.em.DensityMap, dmap2: IMP.em.DensityMap) -> float:
+	def calculate_dice_coefficient(self, dmap1, dmap2):
 		"""
 		Computes the Dice Coefficient (F1 Score) for binary overlap between two density maps.
 		
@@ -107,7 +108,7 @@ class BagelFitter:
 
 		return 2 * I_dmap1_dmap2 / (I_dmap1 + I_dmap2)
 
-	def plot_voxel_values(self) -> None:
+	def plot_voxel_values(self):
 		"""
 		Plots the histogram of voxel intensity values in the density map.
 		"""
@@ -117,12 +118,17 @@ class BagelFitter:
 		plt.ylabel("Frequency (log scale)")
 		plt.show()
 
-	def fill_binary_density(self, torus: Torus) -> None:
+	def fill_binary_density(self, torus):
 		"""
-		Generates a binary density map based on the torus parameters.
+		Fill `self.dmap_out` with a *binary* torus membrane mask (0/1).
+		
+		A voxel is set to 1 when:
+		- it lies inside the torus membrane shell (see `Torus.contains_point()`), and
+		- its in-plane (XY) radius satisfies ρ_xy <= (R + extension). This cutoff is what
+		  allows "extended membrane" coverage beyond the torus ring.
 		
 		Args:
-			torus (Torus): Torus object used to define the density map.
+		    torus: Torus defining the membrane shell and in-plane extension cutoff.
 		"""
 
 		num_vox = self.dmap_out.get_header().get_number_of_voxels()
@@ -147,7 +153,7 @@ class BagelFitter:
 			else:
 				self.dmap_out.set_value(vox, 0.0)
 
-	def fill_binary_density_with_multiple_torus_OLD(self, Tori: list) -> None:
+	def fill_binary_density_with_multiple_torus_OLD(self, Tori):
 
 		num_vox = self.dmap_out.get_header().get_number_of_voxels()
 
@@ -172,8 +178,17 @@ class BagelFitter:
 
 			self.dmap_out.set_value(vox, 1.0 if inside_any else 0.0)
 
-	def fill_binary_density_with_multiple_torus(self, Tori: list) -> None:
-
+	def fill_binary_density_with_multiple_torus(self, Tori):
+		"""
+		Fill `self.dmap_out` with a binary mask for multiple tori.
+		
+		For each voxel we choose the nearest torus in the XY plane (by ρ_xy), then evaluate
+		membership against that torus' membrane shell and its in-plane extension cutoff.
+		This avoids double-counting when multiple tori overlap in space.
+		
+		Args:
+		    Tori: List of `Torus` objects with potentially different centers.
+		"""
 		num_vox = self.dmap_out.get_header().get_number_of_voxels()
 
 		for vox in range(num_vox):
@@ -203,12 +218,18 @@ class BagelFitter:
 
 	
 
-	def fill_nonbinary_density(self, torus: Torus) -> None:
+	def fill_nonbinary_density(self, torus):
 		"""
-		Generates a non-binary density (extracted from the input map) map based on the torus parameters.
+		Fill `self.dmap_out` with a *non-binary* torus map derived from the experimental map.
+		
+		For voxels inside the torus membrane shell (and within the in-plane extension cutoff),
+		the output voxel value is copied from the experimental map. Voxels outside are set to 0.
 		
 		Args:
-			torus (Torus): Torus object used to define the density map.
+		    torus: Torus defining the membrane shell and in-plane extension cutoff.
+		
+		Raises:
+		    RuntimeError: If no experimental map has been loaded.
 		"""
 
 		try:
@@ -235,18 +256,21 @@ class BagelFitter:
 			else:
 				self.dmap_out.set_value(vox, 0.0)
 
-	def fit_binary_torus(self, tor_R_range: tuple = (670, 680, 10), tor_r_range: tuple = (160, 180, 20), tor_th_range: tuple = (85.0, 95, 10), extension: float = 0.0) -> Torus:
+	def fit_binary_torus(self, tor_R_range= (670, 680, 10), tor_r_range= (160, 180, 20), tor_th_range= (85.0, 95, 10), extension= 0.0):
 		"""
-		Fits a binary torus to the density map by searching for optimal parameters.
+		Fit a *binary* torus membrane model by grid-searching torus parameters.
+		
+		This generates candidate binary occupancy maps (0/1) and selects the parameters that
+		maximize the cross-correlation coefficient against the experimental map.
 		
 		Args:
-			tor_R_range (tuple, optional): Range of major radius values (start, stop, step).
-			tor_r_range (tuple, optional): Range of minor radius values (start, stop, step).
-			tor_th_range (tuple, optional): Range of thickness values (start, stop, step).
-			extension (float, optional): Additional extension factor (default is 0.0).
+		    tor_R_range: (start, stop, step) for major radius R.
+		    tor_r_range: (start, stop, step) for minor radius r (tube radius).
+		    tor_th_range: (start, stop, step) for membrane-shell thickness.
+		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
 		
 		Returns:
-			Torus: Best-fitting torus object based on maximum cross-correlation coefficient.
+		    Best-fitting `Torus`.
 		"""
 
 		self.dmap_out_binary_flag = True
@@ -283,18 +307,21 @@ class BagelFitter:
 			self.best_torus.dmap = self.dmap_out
 			return self.best_torus
 
-	def fit_nonbinary_torus(self, tor_R_range: tuple = (670, 680, 10), tor_r_range: tuple = (160, 180, 20), tor_th_range: tuple = (85.0, 95, 10), extension: float = 0.0) -> Torus:
+	def fit_nonbinary_torus(self, tor_R_range= (670, 680, 10), tor_r_range= (160, 180, 20), tor_th_range= (85.0, 95, 10), extension= 0.0):
 		"""
-		Fits a non-binary torus to the density map by searching for optimal parameters.
+		Fit a *non-binary* torus membrane model by grid-searching torus parameters.
+		
+		This generates candidate non-binary maps (experimental densities inside the shell) and
+		selects the parameters that maximize the cross-correlation coefficient.
 		
 		Args:
-			tor_R_range (tuple, optional): Range of major radius values (start, stop, step).
-			tor_r_range (tuple, optional): Range of minor radius values (start, stop, step).
-			tor_th_range (tuple, optional): Range of thickness values (start, stop, step).
-			extension (float, optional): Additional extension factor (default is 0.0).
+		    tor_R_range: (start, stop, step) for major radius R.
+		    tor_r_range: (start, stop, step) for minor radius r (tube radius).
+		    tor_th_range: (start, stop, step) for membrane-shell thickness.
+		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
 		
 		Returns:
-			Torus: Best-fitting torus object based on maximum cross-correlation coefficient.
+		    Best-fitting `Torus`.
 		"""
 		self.dmap_out_binary_flag = False
 
@@ -326,21 +353,22 @@ class BagelFitter:
 			
 			return self.best_torus
 
-	def generate_binary_torus(self, tor_R: float, tor_r: float, tor_th: float, extension: float = 0.0, boundingbox_length: float = 2240, voxel_size: float = 10, outmap_fname: str = "torus_yeast_fitted.mrc", writemap: bool = True) -> Torus:
+	def generate_binary_torus(self, tor_R, tor_r, tor_th, extension= 0.0, boundingbox_length= 2240, voxel_size= 10, outmap_fname= "torus_yeast_fitted.mrc", writemap= True):
 		"""
-		Generates and writes a binary torus density map based on input parameters.
+		Generate a *binary* torus occupancy map and optionally write it to disk.
 		
 		Args:
-			tor_R (float): Major radius of the torus.
-			tor_r (float): Minor radius of the torus.
-			tor_th (float): Thickness of the bilipid layer.
-			extension (float, optional): Additional extension factor (default is 0.0).
-			boundingbox_length (float, optional): Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å.
-			voxel_size (float, optional): Individual voxel size in the output map file. Default value 10 Å.
-			outmap_fname (str, optional): Output map file name of the torus. Default is "torus_yeast_fitted.mrc" in the current directory.
+		    tor_R: Major radius R.
+		    tor_r: Minor radius r (tube radius).
+		    tor_th: Membrane-shell thickness within the tube.
+		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
+		    boundingbox_length: Side length of the (cubic) output bounding box (centered at origin).
+		    voxel_size: Output voxel spacing.
+		    outmap_fname: Output filename (.mrc).
+		    writemap: If True, writes the map to `outmap_fname`.
 		
 		Returns:
-			Torus: Torus object based on input parameters.
+		    Torus: The torus parameters used to generate the map.
 		"""
 		self.dmap_out_binary_flag = True
 
@@ -369,21 +397,23 @@ class BagelFitter:
 		
 		return self.best_torus
 
-	def generate_multiple_binary_torus(self, tor_R: float, tor_r: float, tor_th: float, extension: float = 0.0, rectangular_bb = [(-150,-150,-150),(150,150,150)], torus_centers: list = [(0.0, 0.0, 0.0)], voxel_size: float = 10, outmap_fname: str = "torus_yeast_fitted.mrc", writemap: bool = True) -> Torus:
+	def generate_multiple_binary_torus(self, tor_R, tor_r, tor_th, extension= 0.0, rectangular_bb = [(-150,-150,-150),(150,150,150)], torus_centers= [(0.0, 0.0, 0.0)], voxel_size= 10, outmap_fname= "torus_yeast_fitted.mrc", writemap= True):
 		"""
-		Generates and writes a binary torus density map based on input parameters.
+		Generate a *binary* occupancy map containing multiple tori and optionally write it to disk.
 		
 		Args:
-			tor_R (float): Major radius of the torus.
-			tor_r (float): Minor radius of the torus.
-			tor_th (float): Thickness of the bilipid layer.
-			extension (float, optional): Additional extension factor (default is 0.0).
-			boundingbox_length (float, optional): Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å.
-			voxel_size (float, optional): Individual voxel size in the output map file. Default value 10 Å.
-			outmap_fname (str, optional): Output map file name of the torus. Default is "torus_yeast_fitted.mrc" in the current directory.
+		    tor_R: Major radius R (shared by all tori).
+		    tor_r: Minor radius r (shared by all tori).
+		    tor_th: Membrane-shell thickness (shared by all tori).
+		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension) per torus.
+		    rectangular_bb: Axis-aligned rectangular bounding box as [(xmin,ymin,zmin), (xmax,ymax,zmax)].
+		    torus_centers: List of torus centers (cx, cy, cz) in map coordinates.
+		    voxel_size: Output voxel spacing.
+		    outmap_fname: Output filename (.mrc).
+		    writemap: If True, writes the map to `outmap_fname`.
 		
 		Returns:
-			Torus: Torus object based on input parameters.
+		    Torus: The *last* torus created (all share the same parameters but differ in center).
 		"""
 		self.dmap_out_binary_flag = True
 
@@ -418,23 +448,25 @@ class BagelFitter:
 		
 		return self.best_torus
 
-	def generate_nonbinary_torus(self, tor_R: float, tor_r: float, tor_th: float, extension: float = 0.0, boundingbox_length: float = 2240, voxel_size: float = 10, outmap_fname: str = "torus_yeast_fitted.mrc", writemap: bool = True) -> Torus:
+	def generate_nonbinary_torus(self, tor_R, tor_r, tor_th, extension= 0.0, boundingbox_length= 2240, voxel_size= 10, outmap_fname= "torus_yeast_fitted.mrc", writemap= True):
 		"""
-		Generates and writes a binary torus density map based on input parameters.
+		Generate a *non-binary* torus map (experimental densities inside the shell) and optionally write it to disk.
+		
+		Requires that an experimental map has been loaded via `load_exprimental_map()`.
 		
 		Args:
-			tor_R (float): Major radius of the torus.
-			tor_r (float): Minor radius of the torus.
-			tor_th (float): Thickness of the bilipid layer.
-			extension (float, optional): Additional extension factor (default is 0.0).
-			boundingbox_length (float, optional): Length of the bounding box for Torus centered at (0,0,0). Default value 2240 Å.
-			voxel_size (float, optional): Individual voxel size in the output map file. Default value 10 Å.
-			outmap_fname (str, optional): Output map file name of the torus. Default is "torus_yeast_fitted.mrc" in the current directory.
+		    tor_R: Major radius R.
+		    tor_r: Minor radius r (tube radius).
+		    tor_th: Membrane-shell thickness within the tube.
+		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
+		    boundingbox_length: Side length of the (cubic) output bounding box.
+		    voxel_size: Output voxel spacing.
+		    outmap_fname: Output filename (.mrc).
+		    writemap: If True, writes the map to `outmap_fname`.
 		
 		Returns:
-			Torus: Torus object based on input parameters.
-		"""
-		self.dmap_out_binary_flag = False
+		    Torus: The torus parameters used to generate the map.
+		"""		self.dmap_out_binary_flag = False
 
 		self.voxel_size = voxel_size
 		self.bb_length = boundingbox_length
@@ -461,7 +493,7 @@ class BagelFitter:
 		
 		return self.best_torus
 
-	def write_torusmap_to_file(self, outmap_fname: str) -> None:
+	def write_torusmap_to_file(self, outmap_fname):
 		"""
 		Saves the torus density map to a file.
 		
@@ -480,16 +512,16 @@ class BagelFitter:
 		IMP.em.write_map(self.dmap_out, outmap_fname)
 		return
 
-	def score_torus_maps(self, map1: str, map2: str) -> float:
+	def score_torus_maps(self, map1, map2):
 		"""
-		Computes the cross-correlation coefficient between two torus maps.
+		Compute the cross-correlation coefficient between two density maps.
 		
 		Args:
-			map1 (str): Path to the first torus density map.
-			map2 (str): Path to the second torus density map.
+		    map1: Path to the first map file (.mrc).
+		    map2: Path to the second map file (.mrc).
 		
 		Returns:
-			float: Cross-correlation coefficient indicating similarity between the two maps.
+		    Cross-correlation coefficient (float). Higher indicates greater similarity.
 		"""
 		self.dmap1 = IMP.em.read_map(map1)
 

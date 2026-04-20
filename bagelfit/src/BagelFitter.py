@@ -8,6 +8,8 @@ from time import time
 import matplotlib.pyplot as plt
 from Torus import Torus
 import sys
+from math import fmod
+from math import atan2, degrees
  
 class BagelFitter:
 	"""
@@ -128,7 +130,7 @@ class BagelFitter:
 		  allows "extended membrane" coverage beyond the torus ring.
 		
 		Args:
-		    torus: Torus defining the membrane shell and in-plane extension cutoff.
+			torus: Torus defining the membrane shell and in-plane extension cutoff.
 		"""
 
 		num_vox = self.dmap_out.get_header().get_number_of_voxels()
@@ -152,6 +154,79 @@ class BagelFitter:
 					self.dmap_out.set_value(vox, 0.0)
 			else:
 				self.dmap_out.set_value(vox, 0.0)
+
+
+	def generate_c8_bounds(self, start_angle, c8_extension):
+		sector_width = 360 / 8  # 45°
+		bounds = []
+
+		for i in range(8):
+			a0 = (start_angle + i * sector_width - c8_extension) % 360
+			a1 = (start_angle + (i + 1) * sector_width + c8_extension) % 360
+			bounds.append((a0, a1))
+
+		return bounds
+
+	def angle_in_bounds(self, angle, bounds):
+		a0, a1 = bounds
+		if a0 <= a1:
+			return a0 <= angle < a1
+		else:
+			# wrap-around case
+			return angle >= a0 or angle < a1
+
+	def fill_binary_C8SU_density(self, torus, tor_psi_bounds):
+		"""
+		Fill `self.dmap_out` with a *binary* torus membrane mask (0/1).
+		
+		A voxel is set to 1 when:
+		- it lies inside the torus membrane shell (see `Torus.contains_point()`), and
+		- its in-plane (XY) radius satisfies ρ_xy <= (R + extension). This cutoff is what
+		  allows "extended membrane" coverage beyond the torus ring.
+		
+		Args:
+			torus: Torus defining the membrane shell and in-plane extension cutoff.
+		"""
+
+		header = self.dmap_out.get_header()
+		num_vox = header.get_number_of_voxels()
+
+		nx = header.get_nx()
+		ny = header.get_ny()
+		nz = header.get_nz()
+		
+
+		xy_max_rad = torus.R + torus.extension
+		print(torus.extension)
+
+		for vox in range(0,num_vox):
+
+			#Getting individual values per dimension
+			x = self.dmap_out.get_location_in_dim_by_voxel(vox, 0) + self.voxel_size/2
+			y = self.dmap_out.get_location_in_dim_by_voxel(vox, 1) + self.voxel_size/2
+			z = self.dmap_out.get_location_in_dim_by_voxel(vox, 2) + self.voxel_size/2
+
+			if torus.contains_point(x, y, z):
+				cx, cy, _ = torus.center
+				dist_tor_xy = sqrt((x - cx)**2 + (y - cy)**2)
+				dx = x - cx
+				dy = y - cy
+				angle = degrees(atan2(dx, dy))
+				if angle < 0:
+					angle += 360
+
+				if dist_tor_xy < xy_max_rad:
+				#if sqrt(x**2 + y**2) < xy_max_rad:
+					#if tor_psi_bounds[0] <= angle <= tor_psi_bounds[1]:
+					if self.angle_in_bounds(angle, tor_psi_bounds):
+						self.dmap_out.set_value(vox, 1.0)
+					else:
+						self.dmap_out.set_value(vox, 0.0)
+				else:
+					self.dmap_out.set_value(vox, 0.0)
+			else:
+				self.dmap_out.set_value(vox, 0.0)
+
 
 	def fill_binary_density_with_multiple_torus_OLD(self, Tori):
 
@@ -187,7 +262,7 @@ class BagelFitter:
 		This avoids double-counting when multiple tori overlap in space.
 		
 		Args:
-		    Tori: List of `Torus` objects with potentially different centers.
+			Tori: List of `Torus` objects with potentially different centers.
 		"""
 		num_vox = self.dmap_out.get_header().get_number_of_voxels()
 
@@ -226,10 +301,10 @@ class BagelFitter:
 		the output voxel value is copied from the experimental map. Voxels outside are set to 0.
 		
 		Args:
-		    torus: Torus defining the membrane shell and in-plane extension cutoff.
+			torus: Torus defining the membrane shell and in-plane extension cutoff.
 		
 		Raises:
-		    RuntimeError: If no experimental map has been loaded.
+			RuntimeError: If no experimental map has been loaded.
 		"""
 
 		try:
@@ -264,13 +339,13 @@ class BagelFitter:
 		maximize the cross-correlation coefficient against the experimental map.
 		
 		Args:
-		    tor_R_range: (start, stop, step) for major radius R.
-		    tor_r_range: (start, stop, step) for minor radius r (tube radius).
-		    tor_th_range: (start, stop, step) for membrane-shell thickness.
-		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
+			tor_R_range: (start, stop, step) for major radius R.
+			tor_r_range: (start, stop, step) for minor radius r (tube radius).
+			tor_th_range: (start, stop, step) for membrane-shell thickness.
+			extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
 		
 		Returns:
-		    Best-fitting `Torus`.
+			Best-fitting `Torus`.
 		"""
 
 		self.dmap_out_binary_flag = True
@@ -315,13 +390,13 @@ class BagelFitter:
 		selects the parameters that maximize the cross-correlation coefficient.
 		
 		Args:
-		    tor_R_range: (start, stop, step) for major radius R.
-		    tor_r_range: (start, stop, step) for minor radius r (tube radius).
-		    tor_th_range: (start, stop, step) for membrane-shell thickness.
-		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
+			tor_R_range: (start, stop, step) for major radius R.
+			tor_r_range: (start, stop, step) for minor radius r (tube radius).
+			tor_th_range: (start, stop, step) for membrane-shell thickness.
+			extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
 		
 		Returns:
-		    Best-fitting `Torus`.
+			Best-fitting `Torus`.
 		"""
 		self.dmap_out_binary_flag = False
 
@@ -358,17 +433,17 @@ class BagelFitter:
 		Generate a *binary* torus occupancy map and optionally write it to disk.
 		
 		Args:
-		    tor_R: Major radius R.
-		    tor_r: Minor radius r (tube radius).
-		    tor_th: Membrane-shell thickness within the tube.
-		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
-		    boundingbox_length: Side length of the (cubic) output bounding box (centered at origin).
-		    voxel_size: Output voxel spacing.
-		    outmap_fname: Output filename (.mrc).
-		    writemap: If True, writes the map to `outmap_fname`.
+			tor_R: Major radius R.
+			tor_r: Minor radius r (tube radius).
+			tor_th: Membrane-shell thickness within the tube.
+			extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
+			boundingbox_length: Side length of the (cubic) output bounding box (centered at origin).
+			voxel_size: Output voxel spacing.
+			outmap_fname: Output filename (.mrc).
+			writemap: If True, writes the map to `outmap_fname`.
 		
 		Returns:
-		    Torus: The torus parameters used to generate the map.
+			Torus: The torus parameters used to generate the map.
 		"""
 		self.dmap_out_binary_flag = True
 
@@ -397,23 +472,70 @@ class BagelFitter:
 		
 		return self.best_torus
 
+	def generate_c8_sux_binary_torus(self, tor_R, tor_r, tor_th, tor_psi_bounds, extension= 0.0, boundingbox_length= 2240, voxel_size= 10, outmap_fname= "torus_yeast_fitted.mrc", writemap= True):
+		"""
+		Generate a *binary* torus occupancy map and optionally write it to disk.
+		
+		Args:
+			tor_R: Major radius R.
+			tor_r: Minor radius r (tube radius).
+			tor_th: Membrane-shell thickness within the tube.
+			extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
+			boundingbox_length: Side length of the (cubic) output bounding box (centered at origin).
+			voxel_size: Output voxel spacing.
+			outmap_fname: Output filename (.mrc).
+			writemap: If True, writes the map to `outmap_fname`.
+		
+		Returns:
+			Torus: The torus parameters used to generate the map.
+		"""
+		self.dmap_out_binary_flag = True
+
+		self.voxel_size = voxel_size
+		self.bb_length = boundingbox_length
+
+		self.n_voxels = int(self.bb_length / self.voxel_size)
+
+		self.dmap_out = self.create_blank_density_map(self.n_voxels)
+
+		self.best_torus= None
+
+		start_time2 = time()
+		for tor_R, tor_r, tor_th in [(tor_R, tor_r, tor_th)]:
+
+			torus = Torus(tor_R, tor_r, tor_th, extension)
+			#self.fill_binary_density(torus)
+			self.fill_binary_C8SU_density(torus, tor_psi_bounds)
+
+		self.best_torus = torus
+
+		if writemap==True:
+			IMP.em.write_map(self.dmap_out, outmap_fname)
+		
+		print(f"Torus with Parameters: R={self.best_torus.R}, r={self.best_torus.r}, thickness={self.best_torus.thickness}")
+		print(f"Execution Time: {time() - start_time2:.4f} seconds")
+		
+		return self.best_torus
+
+		
+
 	def generate_multiple_binary_torus(self, tor_R, tor_r, tor_th, extension= 0.0, rectangular_bb = [(-150,-150,-150),(150,150,150)], torus_centers= [(0.0, 0.0, 0.0)], voxel_size= 10, outmap_fname= "torus_yeast_fitted.mrc", writemap= True):
 		"""
 		Generate a *binary* occupancy map containing multiple tori and optionally write it to disk.
 		
 		Args:
-		    tor_R: Major radius R (shared by all tori).
-		    tor_r: Minor radius r (shared by all tori).
-		    tor_th: Membrane-shell thickness (shared by all tori).
-		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension) per torus.
-		    rectangular_bb: Axis-aligned rectangular bounding box as [(xmin,ymin,zmin), (xmax,ymax,zmax)].
-		    torus_centers: List of torus centers (cx, cy, cz) in map coordinates.
-		    voxel_size: Output voxel spacing.
-		    outmap_fname: Output filename (.mrc).
-		    writemap: If True, writes the map to `outmap_fname`.
+			tor_R: Major radius R (shared by all tori).
+			tor_r: Minor radius r (shared by all tori).
+			tor_th: Membrane-shell thickness (shared by all tori).
+			extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension) per torus.
+			rectangular_bb: Axis-aligned rectangular bounding box as [(xmin,ymin,zmin), (xmax,ymax,zmax)].
+			torus_centers: List of torus centers (cx, cy, cz) in map coordinates.
+			voxel_size: Output voxel spacing.
+			outmap_fname: Output filename (.mrc).
+			writemap: If True, writes the map to `outmap_fname`.
 		
 		Returns:
-		    Torus: The *last* torus created (all share the same parameters but differ in center).
+			Torus: The *last* torus created (all share the same parameters but differ in center).
 		"""
 		self.dmap_out_binary_flag = True
 
@@ -455,18 +577,19 @@ class BagelFitter:
 		Requires that an experimental map has been loaded via `load_exprimental_map()`.
 		
 		Args:
-		    tor_R: Major radius R.
-		    tor_r: Minor radius r (tube radius).
-		    tor_th: Membrane-shell thickness within the tube.
-		    extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
-		    boundingbox_length: Side length of the (cubic) output bounding box.
-		    voxel_size: Output voxel spacing.
-		    outmap_fname: Output filename (.mrc).
-		    writemap: If True, writes the map to `outmap_fname`.
+			tor_R: Major radius R.
+			tor_r: Minor radius r (tube radius).
+			tor_th: Membrane-shell thickness within the tube.
+			extension: In-plane (XY) radial allowance used as ρ_xy <= (R + extension).
+			boundingbox_length: Side length of the (cubic) output bounding box.
+			voxel_size: Output voxel spacing.
+			outmap_fname: Output filename (.mrc).
+			writemap: If True, writes the map to `outmap_fname`.
 		
 		Returns:
-		    Torus: The torus parameters used to generate the map.
-		"""		self.dmap_out_binary_flag = False
+			Torus: The torus parameters used to generate the map.
+		"""		
+		self.dmap_out_binary_flag = False
 
 		self.voxel_size = voxel_size
 		self.bb_length = boundingbox_length
@@ -517,11 +640,11 @@ class BagelFitter:
 		Compute the cross-correlation coefficient between two density maps.
 		
 		Args:
-		    map1: Path to the first map file (.mrc).
-		    map2: Path to the second map file (.mrc).
+			map1: Path to the first map file (.mrc).
+			map2: Path to the second map file (.mrc).
 		
 		Returns:
-		    Cross-correlation coefficient (float). Higher indicates greater similarity.
+			Cross-correlation coefficient (float). Higher indicates greater similarity.
 		"""
 		self.dmap1 = IMP.em.read_map(map1)
 

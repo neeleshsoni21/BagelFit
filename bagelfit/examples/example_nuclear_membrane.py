@@ -178,6 +178,69 @@ def generate_four_binary_torus_map():
 
 	return
 
+def generate_C8_SUx_binary_torus_map(boundingbox, extension, startangle, c8_extension):
+	"""
+	Generate a C8 symmetric eight *binary* torus occupancy map and save it to disk.
+
+	Args:
+		boundingbox (float | int):
+			Side length of the (typically cubic) bounding box in the same units as
+			the torus parameters (e.g., Angstroms).
+		extension (float):
+			Additional radial/planar extension used to expand the modeled membrane
+			region around the torus (implementation-specific to bagelfit).
+
+	Returns:
+		None
+
+	Example:
+		.. code-block:: python
+
+			data_path = os.path.join(script_dir, "./yeast_membrane/")
+			fitter = bf.BagelFitter()
+
+			tor_R = 660
+			tor_r = 140
+			tor_th = 55
+			extension = 0.0
+
+			best_torus = fitter.generate_binary_torus(
+				tor_R, tor_r, tor_th,
+				extension=extension,
+				boundingbox_length=2240,
+				voxel_size=10.0,
+				outmap_fname=os.path.join(data_path, "torus_yeast_fitted.mrc"),
+			)
+	"""
+	import bagelfit as bf
+
+	data_path = os.path.join(script_dir, "./yeast_mr_c8granular/")
+	print(data_path)
+
+	# -----------------------------------------------------#
+	# Generate and write a *binary* torus map from parameters
+	# -----------------------------------------------------#
+	fitter = bf.BagelFitter()
+
+	tor_R = 650
+	tor_r = 125
+	tor_th = 40
+
+	#tor_psi_bounds = [0,45.0]
+	tor_psi_bounds = fitter.generate_c8_bounds(startangle, c8_extension)
+	
+	for suidx, tpb in enumerate(tor_psi_bounds[0:2]):
+
+		# Writes a binary occupancy map (.mrc) where voxels inside the torus region are 1.
+		best_torus = fitter.generate_c8_sux_binary_torus(
+			tor_R, tor_r, tor_th, tpb,
+			extension=extension,
+			boundingbox_length=boundingbox,
+			voxel_size=10.0,
+			outmap_fname=os.path.join(data_path, "torus_yeast_fitted_"+str(suidx)+".mrc"),
+		)
+
+	return
 
 def generate_nonbinary_torus_map(experimental_map, boundingbox, extension):
 	"""
@@ -366,4 +429,13 @@ if __name__ == '__main__':
 	# generate_two_binary_torus_map()
 
 	# Generate four toroids in one map
-	generate_four_binary_torus_map()
+	# generate_four_binary_torus_map()
+
+
+
+
+	# ---------------------------------
+	# Example: Generate C8 subunit toroids
+	# ---------------------------------
+
+	generate_C8_SUx_binary_torus_map(boundingbox=2500, extension=0, startangle=0, c8_extension=5) # c8_extension in degrees
